@@ -7,6 +7,7 @@ The project will start based on .net 7.
 - [x] [Sonarqube](https://www.sonarsource.com/products/sonarqube/downloads/) was containerized to be used as the code quality checker.
 - [x] [Sonarlint](https://www.sonarsource.com/products/sonarlint/) was configured at Visual Studio 2022 integrating with Sonarqube
 - [x] [OpenCover](https://github.com/OpenCover/opencoverCode) is the tool responsible for the code coverage reports generation.
+- [x] [Bogus](https://github.com/bchavez/Bogus) to faker data on Tests.
 For the local integration with Sonarqube, the commands used to are:
 ```
 dotnet sonarscanner begin /k:"eShopMicroservices"
