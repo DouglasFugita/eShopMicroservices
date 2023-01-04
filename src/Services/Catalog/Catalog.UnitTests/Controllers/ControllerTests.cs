@@ -11,74 +11,76 @@ namespace Catalog.UnitTests.Controllers;
 
 public class ControllerTests
 {
+
     [Fact]
-    public async void GetProducts_OnSuccess_ReturnStatusCode200()
+    public async Task GetProducts_OnSuccess_ReturnStatusCode200()
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
         mockCatalogRepository.Setup(service => service.GetProducts())
             .ReturnsAsync(ProductsFixtures.GetProductsFixture());
 
-        var sut = new CatalogController(mockCatalogRepository.Object);
+        var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var result = await sut.GetProducts();
+        var actionResult = await controller.GetProducts();
 
         //Assert
-        result.Should().BeOfType<OkObjectResult>();
-        var okResult = (OkObjectResult)result;
-        okResult.StatusCode.Should().Be(200);
+        var result = actionResult.Result as OkObjectResult;
+        result.StatusCode.Should().Be(200);
+        result.Value.Should().BeOfType<List<Product>>();
     }
 
     [Fact]
-    public async void GetProducts_OnSuccess_InvokeRepositoryExactlyOnce()
-    {
-        //Arrange
-        var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.GetProducts())
-            .ReturnsAsync(ProductsFixtures.GetProductsFixture());
-
-        var sut = new CatalogController(mockCatalogRepository.Object);
-
-        //Act
-        await sut.GetProducts();
-
-        //Assert
-        mockCatalogRepository.Verify(service => service.GetProducts(), Times.Once()); 
-    }
-
-    [Fact]
-    public async void GetProducts_OnSuccess_ReturnsListOfProducts()
-    {
-        //Arrange
-        var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.GetProducts())
-            .ReturnsAsync(ProductsFixtures.GetProductsFixture());
-
-        var sut = new CatalogController(mockCatalogRepository.Object);
-
-        //Act
-        var result = await sut.GetProducts();
-
-        //Assert
-        result.Should().BeOfType<OkObjectResult>();
-        var okResult = (OkObjectResult)result;
-        okResult.Value.Should().BeOfType<List<Product>>();
-    }
-
-    [Fact]
-    public async void GetProducts_OnNoProductsFound_ReturnsNotFound()
+    public async Task GetProducts_OnNoProductsFound_ReturnsNotFound()
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
         mockCatalogRepository.Setup(service => service.GetProducts()).ReturnsAsync(new List<Product>());
 
-        var sut = new CatalogController(mockCatalogRepository.Object);
+        var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var result = await sut.GetProducts();
+        var actionResult = await controller.GetProducts();
 
         //Assert
+        var result = actionResult.Result as NotFoundResult;
+        result.Should().BeOfType<NotFoundResult>();
+    }
+
+    [Fact]
+    public async Task GetProductById_OnSuccess_ReturnStatusCode200()
+    {
+        //Arrange
+        var mockCatalogRepository = new Mock<ICatalogRepository>();
+        mockCatalogRepository.Setup(service => service.GetProductById("string"))
+            .ReturnsAsync(ProductsFixtures.GetFakeProduct.Generate(2).First());
+
+        var controller = new CatalogController(mockCatalogRepository.Object);
+
+        //Act
+        var actionResult = await controller.GetProductById("string");
+
+        //Assert
+        var result = actionResult.Result as OkObjectResult;
+        result.StatusCode.Should().Be(200);
+        result.Value.Should().BeOfType<Product>();
+    }
+
+    [Fact]
+    public async Task GetProductById_OnNoProductsFound_ReturnsNotFound()
+    {
+        //Arrange
+        var mockCatalogRepository = new Mock<ICatalogRepository>();
+        mockCatalogRepository.Setup(service => service.GetProducts()).ReturnsAsync(new List<Product>());
+
+        var controller = new CatalogController(mockCatalogRepository.Object);
+
+        //Act
+        var actionResult = await controller.GetProductById("string");
+
+        //Assert
+        var result = actionResult.Result as NotFoundResult;
         result.Should().BeOfType<NotFoundResult>();
     }
 }
