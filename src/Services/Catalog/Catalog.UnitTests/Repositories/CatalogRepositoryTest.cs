@@ -106,7 +106,7 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
     public async Task GetProductsByName_OnSuccess_WithValidFilter()
     {
         //Arrange
-        var renderedExpectedFilter = _fixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Name, _fixture.FilterParam));
+        var renderedExpectedFilter = CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Name, _fixture.FilterParam));
         var renderedCreatedFilter = new BsonDocument();
 
         _fixture.MockProductCollection
@@ -115,7 +115,7 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
                 )
             .Callback<FilterDefinition<Product>, FindOptions<Product, Product>, CancellationToken>(
                 (x, y, z) => {
-                    renderedCreatedFilter = _fixture.FilterRender(x);
+                    renderedCreatedFilter = CatalogContextFixture.FilterRender(x);
                 })
             .ReturnsAsync(_fixture.MockCursor.Object);
 
@@ -147,7 +147,7 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
     public async Task GetProductsById_OnSuccess_WithValidFilter()
     {
         //Arrange
-        var renderedExpectedFilter = _fixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Id, _fixture.FilterParam));
+        var renderedExpectedFilter = CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Id, _fixture.FilterParam));
         var renderedCreatedFilter = new BsonDocument();
 
         _fixture.MockProductCollection
@@ -156,7 +156,7 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
                 )
             .Callback<FilterDefinition<Product>, FindOptions<Product, Product>, CancellationToken>(
                 (x, y, z) => {
-                    renderedCreatedFilter = _fixture.FilterRender(x);
+                    renderedCreatedFilter = CatalogContextFixture.FilterRender(x);
                 })
             .ReturnsAsync(_fixture.MockCursor.Object);
 
@@ -188,7 +188,7 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
     public async Task GetProductsByCategory_OnSuccess_WithValidFilter()
     {
         //Arrange
-        var renderedExpectedFilter = _fixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Category, _fixture.FilterParam));
+        var renderedExpectedFilter = CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Category, _fixture.FilterParam));
         var renderedCreatedFilter = new BsonDocument();
 
         _fixture.MockProductCollection
@@ -197,7 +197,7 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
                 )
             .Callback<FilterDefinition<Product>, FindOptions<Product, Product>, CancellationToken>(
                 (x, y, z) => {
-                    renderedCreatedFilter = _fixture.FilterRender(x);
+                    renderedCreatedFilter = CatalogContextFixture.FilterRender(x);
                 })
             .ReturnsAsync(_fixture.MockCursor.Object);
 

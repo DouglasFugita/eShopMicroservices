@@ -38,7 +38,7 @@ public class CatalogContextFixture
         ExampleProduct = new Product("id", "name", "category", "summary", "description", "imageFile", 100);
     }
 
-    public BsonDocument FilterRender(FilterDefinition<Product> filter)
+    public static BsonDocument FilterRender(FilterDefinition<Product> filter)
     {
         var serializerRegistry = BsonSerializer.SerializerRegistry;
         var documentSerializer = serializerRegistry.GetSerializer<Product>();

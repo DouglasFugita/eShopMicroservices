@@ -32,7 +32,7 @@ public class CatalogRepository: ICatalogRepository
         return await _context.Products.Find(filter).ToListAsync();
     }
 
-    public async Task<Product> GetProductById(string id)
+    public async Task<Product?> GetProductById(string id)
     {
         FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Id, id);
         return await _context.Products.Find(filter).FirstOrDefaultAsync();

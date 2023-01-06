@@ -13,6 +13,6 @@ public class CatalogContext : ICatalogContext
         var database = client.GetDatabase(config.GetValue<string>("DatabaseSettings:DatabaseName"));
 
         Products = database.GetCollection<Product>(config.GetValue<string>("DatabaseSettings:CollectionName"));
-        CatalogContextSeed.SeedData(Products);
+        CatalogContextSeed.SeedData(Products).WaitAsync(new CancellationToken());
     }
 }
