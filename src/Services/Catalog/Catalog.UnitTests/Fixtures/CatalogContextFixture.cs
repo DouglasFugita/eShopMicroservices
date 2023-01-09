@@ -20,6 +20,7 @@ public class CatalogContextFixture
     public Product ExampleProduct { get; }
     public CatalogRepository CatalogRepository { get; }
     public string FilterParam { get; }
+    public string FilterIdParam { get; }
 
 
     public CatalogContextFixture()
@@ -35,6 +36,7 @@ public class CatalogContextFixture
         CatalogRepository = new CatalogRepository(MockContext.Object);
 
         FilterParam = "string";
+        FilterIdParam = "602d2149e773f2a3990b47fa";
         ExampleProduct = new Product("id", "name", "category", "summary", "description", "imageFile", 100);
     }
 

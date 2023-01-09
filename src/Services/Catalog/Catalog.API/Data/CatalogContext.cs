@@ -1,5 +1,8 @@
-﻿using Catalog.API.Entities;
+﻿using Catalog.API.Data.Models;
+using Catalog.API.Entities;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Catalog.API.Data;
 
@@ -7,12 +10,14 @@ public class CatalogContext : ICatalogContext
 {
     public IMongoCollection<Product> Products { get; }
 
-    public CatalogContext(IConfiguration config)
+    public CatalogContext(IOptions<DatabaseSettingsModel> settings)
     {
-        var client = new MongoClient(config.GetValue<string>("DatabaseSettings:ConnectionString"));
-        var database = client.GetDatabase(config.GetValue<string>("DatabaseSettings:DatabaseName"));
+        var mongoClient = new MongoClient(settings.Value.ConnectionString);
+        var mongoDatabase = mongoClient.GetDatabase(settings.Value.DatabaseName);
 
-        Products = database.GetCollection<Product>(config.GetValue<string>("DatabaseSettings:CollectionName"));
+        Products = mongoDatabase.GetCollection<Product>(settings.Value.CollectionName);
         CatalogContextSeed.SeedData(Products).WaitAsync(new CancellationToken());
     }
+
+
 }
