@@ -1,4 +1,4 @@
-name: .net + SonarCloud
+name: .net + SonarCloud 
 
 on:
   push:
