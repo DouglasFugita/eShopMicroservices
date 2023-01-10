@@ -3,6 +3,8 @@ Hi! This study project was created to improve the project [AspnetMicroservicesEx
 
 The project will start based on .net 7.
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DouglasFugita_eShopMicroservices&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=DouglasFugita_eShopMicroservices)
+
 ## Tests
 - [x] [Sonarqube](https://www.sonarsource.com/products/sonarqube/downloads/) was containerized to be used as the code quality checker.
 - [x] [Sonarlint](https://www.sonarsource.com/products/sonarlint/) was configured at Visual Studio 2022 integrating with Sonarqube
@@ -20,3 +22,10 @@ dotnet build --no-incremental
 [OpenCoverPath]\OpenCover.Console.exe -target:"dotnet.exe" -targetargs:"test --no-build" -returntargetcode -output:coverage.xml -register:user
 
 dotnet sonarscanner end /d:sonar.login=[sonarqube code]
+```
+
+## Ports
+- Portainer: http://localhost:9000
+- SonarQube: http://localhost:9100/
+- MongoExpress: http://localhost:8081/
+- Jenkins: http://localhost:8080/
