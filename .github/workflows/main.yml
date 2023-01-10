@@ -37,7 +37,7 @@ jobs:
         run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
 
       - name: Install project dependencies
-        run: dotnet restore
+        run: dotnet restore ./src
 
       - name: Test and analyze
         env:
