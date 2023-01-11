@@ -2,7 +2,9 @@ using Catalog.API.Configuration;
 using Catalog.API.Data;
 using Catalog.API.Data.Models;
 using Catalog.API.Repositories;
+using Common.Logging;
 using MongoDB.Driver;
+using Serilog;
 using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.RegisterServices(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 var app = builder.Build();
 
