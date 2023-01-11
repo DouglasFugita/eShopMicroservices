@@ -16,6 +16,12 @@ services:
   mongodb:
     image: mongo
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.2
+
 volumes:
   portainer_data:
   sonarqube_data:
@@ -24,7 +30,10 @@ volumes:
   postgresql:
   postgresql_data:
   mongo_data:
+  elasticsearch_data:
 
 networks: 
   catalog-network:
+    driver: bridge
+  elastic-network:
     driver: bridge
