@@ -31,8 +31,10 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 ## Logs
 - [x] [ELK Stack](https://www.elastic.co/pt/elastic-stack/) to centralized logging
 - [ ] [Beats](https://www.elastic.co/pt/beats/) to retrieve data from log files
+- [x] [Serilog](https://serilog.net/) for "log file convenience" connecting directly to Elastic
 
 ## Ports
 - Portainer: http://localhost:9000
 - SonarQube: http://localhost:9100/
 - MongoExpress: http://localhost:8081/
+- Kibana: http://localhost:9010/
