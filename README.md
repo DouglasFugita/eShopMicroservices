@@ -25,9 +25,14 @@ dotnet build --no-incremental
 
 dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 ```
+## CI
+- [x] Github Action
+
+## Logs
+- [x] [ELK Stack](https://www.elastic.co/pt/elastic-stack/) to centralized logging
+- [ ] [Beats](https://www.elastic.co/pt/beats/) to retrieve data from log files
 
 ## Ports
 - Portainer: http://localhost:9000
 - SonarQube: http://localhost:9100/
 - MongoExpress: http://localhost:8081/
-- Jenkins: http://localhost:8080/
