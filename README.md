@@ -4,6 +4,7 @@ Hi! This study project was created to improve the project [AspnetMicroservicesEx
 The project will start based on .net 7.
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DouglasFugita_eShopMicroservices&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=DouglasFugita_eShopMicroservices)
+
 [![.net + SonarCloud](https://github.com/DouglasFugita/eShopMicroservices/actions/workflows/main.yml/badge.svg)](https://github.com/DouglasFugita/eShopMicroservices/actions/workflows/main.yml)
 
 ## Tests
