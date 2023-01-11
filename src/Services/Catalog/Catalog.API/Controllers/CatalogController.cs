@@ -91,6 +91,6 @@ public class CatalogController: ControllerBase
     [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeleteProduct(string id)
     {
-        return Ok(await _repository.DeleteProduct(id));
+        return Ok(await _repository.GetProductById(id));
     }
 }
