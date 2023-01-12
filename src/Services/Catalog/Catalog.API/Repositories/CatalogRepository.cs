@@ -6,13 +6,11 @@ namespace Catalog.API.Repositories;
 
 public class CatalogRepository: ICatalogRepository
 {
-    private readonly ICatalogContext _context;
     private readonly IMongoCollection<Product> ProductsCollection;
 
     public CatalogRepository(ICatalogContext context)
     {
-        _context = context;
-        ProductsCollection = _context.Products;
+        ProductsCollection = context.Products;
     }
 
     public async Task CreateProduct(Product product)

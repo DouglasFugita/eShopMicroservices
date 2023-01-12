@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Logging", "BuildingBlocks\Common.Logging\Common.Logging.csproj", "{E5AC7389-706C-48AD-8AEC-14D50B20EF3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Tests", "BuildingBlocks\BuildingBlocks.Tests\BuildingBlocks.Tests.csproj", "{1E3087F3-3E7E-4B2B-9710-9AD95F3D4A67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E5AC7389-706C-48AD-8AEC-14D50B20EF3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5AC7389-706C-48AD-8AEC-14D50B20EF3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5AC7389-706C-48AD-8AEC-14D50B20EF3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E3087F3-3E7E-4B2B-9710-9AD95F3D4A67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E3087F3-3E7E-4B2B-9710-9AD95F3D4A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E3087F3-3E7E-4B2B-9710-9AD95F3D4A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E3087F3-3E7E-4B2B-9710-9AD95F3D4A67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{5E516FE3-6BEE-4870-8755-F2DF6DB81CC4} = {9E644FA7-2049-4EDE-86FF-35BFD4A0A9BB}
 		{6CDC0513-87F4-496E-A80E-0A5B7AC9B6D6} = {9E644FA7-2049-4EDE-86FF-35BFD4A0A9BB}
 		{E5AC7389-706C-48AD-8AEC-14D50B20EF3A} = {4B18B01D-8E36-4C20-9B85-67752EE3B617}
+		{1E3087F3-3E7E-4B2B-9710-9AD95F3D4A67} = {4B18B01D-8E36-4C20-9B85-67752EE3B617}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D050A76-ADF3-407B-B38F-535D0C03D7BB}
