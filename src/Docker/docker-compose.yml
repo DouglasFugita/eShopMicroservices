@@ -22,6 +22,9 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.2
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
 volumes:
   portainer_data:
   sonarqube_data:
