@@ -93,3 +93,15 @@ services:
     ports:
         - 5672:5672
         - 15672:15672
+
+  catalog.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - DatabaseSettings__ConnectionString=mongodb://mongodb:27017
+    ports:
+      - 5006:80
+    networks:
+      - catalog-network
+      - prometheus-network
+

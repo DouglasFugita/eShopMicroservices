@@ -25,6 +25,35 @@ services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
 
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - prometheus-network
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - prometheus-network
+
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    container_name: catalogApi
+    build:
+      context: ..
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+
 volumes:
   portainer_data:
   sonarqube_data:
@@ -34,9 +63,13 @@ volumes:
   postgresql_data:
   mongo_data:
   elasticsearch_data:
+  grafana_data:
+  prometheus_data:
 
 networks: 
   catalog-network:
     driver: bridge
   elastic-network:
+    driver: bridge
+  prometheus-network:
     driver: bridge
