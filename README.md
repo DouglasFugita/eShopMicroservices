@@ -33,6 +33,11 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 - [ ] [Beats](https://www.elastic.co/pt/beats/) to retrieve data from log files
 - [x] [Serilog](https://serilog.net/) for "log file convenience" connecting directly to Elastic
 
+## Metrics
+- [x] [OpenTelemetry](https://opentelemetry.io/) cloud native option to collect metrics
+- [x] [Prometheus](https://prometheus.io/) time series database to store metrics
+- [x] [Grafana](https://grafana.com/) observability platform to visualize Prometheus data
+
 ## Ports
 - Portainer: http://localhost:9000
 - SonarQube: http://localhost:9100/
