@@ -38,3 +38,5 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 - SonarQube: http://localhost:9100/
 - MongoExpress: http://localhost:8081/
 - Kibana: http://localhost:9010/
+- Prometheus: http://localhost:9090/
+- Grafana: http://localhost:3000/

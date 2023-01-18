@@ -4,10 +4,19 @@ using Catalog.API.Data.Models;
 using Catalog.API.Repositories;
 using Common.Logging;
 using MongoDB.Driver;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
 using Serilog;
 using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(builder => builder
+        .AddAspNetCoreInstrumentation()
+        .AddPrometheusExporter()
+        ).StartWithHost();
+
 
 builder.Services.AddControllers();
 builder.Services.RegisterServices(builder.Configuration);
@@ -25,6 +34,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 app.UseAuthorization();
 
