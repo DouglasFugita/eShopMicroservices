@@ -38,6 +38,10 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 - [x] [Prometheus](https://prometheus.io/) time series database to store metrics
 - [x] [Grafana](https://grafana.com/) observability platform to visualize Prometheus data
 
+## Tracing
+- [x] [OpenTelemetry](https://opentelemetry.io/) cloud native option to send tracing
+- [x] [Jaeger](https://www.jaegertracing.io/) end-to-end distributed tracing
+
 ## Ports
 - Portainer: http://localhost:9000
 - SonarQube: http://localhost:9100/
@@ -45,3 +49,4 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 - Kibana: http://localhost:9010/
 - Prometheus: http://localhost:9090/
 - Grafana: http://localhost:3000/
+- Jaeger: http://localhost:16686/
