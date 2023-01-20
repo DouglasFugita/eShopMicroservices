@@ -27,25 +27,12 @@ services:
 
   grafana:
     image: grafana/grafana
-    ports:
-      - 3000:3000
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
-    volumes:
-      - grafana_data:/var/lib/grafana
-    networks:
-      - prometheus-network
 
   prometheus:
     image: prom/prometheus
-    ports:
-      - 9090:9090
-    volumes:
-      - prometheus_data:/prometheus
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - prometheus-network
+
+  jaeger: 
+    image: jaegertracing/all-in-one:latest
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
