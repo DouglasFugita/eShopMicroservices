@@ -1,8 +1,6 @@
-﻿using Catalog.API.Data;
-using Catalog.API.Data.Models;
-using Catalog.API.Repositories;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+﻿using Catalog.Core.Data;
+using Catalog.Core.Data.Models;
+using Catalog.Core.Repositories;
 
 namespace Catalog.API.Configuration;
 
@@ -13,6 +11,5 @@ public static class DIConfig
         services.Configure<DatabaseSettingsModel>(configuration.GetSection("DatabaseSettings"));
         services.AddSingleton<ICatalogContext, CatalogContext>();
         services.AddScoped<ICatalogRepository, CatalogRepository>();
-
     }
 }

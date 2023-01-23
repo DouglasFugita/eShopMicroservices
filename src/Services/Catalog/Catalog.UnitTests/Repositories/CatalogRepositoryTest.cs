@@ -1,11 +1,7 @@
-﻿
-using Catalog.API.Data;
-using Catalog.API.Entities;
-using Catalog.API.Repositories;
+﻿using Catalog.Core.Entities;
 using Catalog.UnitTests.Fixtures;
 using FluentAssertions;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Moq;
 

@@ -1,15 +1,7 @@
-﻿using Catalog.API.Data;
-using Catalog.API.Entities;
-using Catalog.UnitTests.Fixtures;
-using FluentAssertions;
+﻿using Catalog.Core.Data;
+using Catalog.Core.Entities;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Catalog.UnitTests.Data;
 public class CatalogContextSeedTests

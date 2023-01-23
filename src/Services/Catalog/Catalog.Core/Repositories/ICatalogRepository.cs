@@ -1,6 +1,6 @@
-﻿using Catalog.API.Entities;
+﻿using Catalog.Core.Entities;
 
-namespace Catalog.API.Repositories;
+namespace Catalog.Core.Repositories;
 
 public interface ICatalogRepository
 {

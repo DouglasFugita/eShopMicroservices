@@ -1,16 +1,10 @@
 using Catalog.API.Configuration;
-using Catalog.API.Data;
-using Catalog.API.Data.Models;
-using Catalog.API.Repositories;
 using Common.Logging;
-using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
-using System.Runtime.CompilerServices;
 
 
 var builder = WebApplication.CreateBuilder(args);

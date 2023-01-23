@@ -1,8 +1,8 @@
-﻿using Catalog.API.Data;
-using Catalog.API.Entities;
+﻿using Catalog.Core.Data;
+using Catalog.Core.Entities;
 using MongoDB.Driver;
 
-namespace Catalog.API.Repositories;
+namespace Catalog.Core.Repositories;
 
 public class CatalogRepository: ICatalogRepository
 {

@@ -1,10 +1,5 @@
 ﻿using Bogus;
-using Catalog.API.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Catalog.Core.Entities;
 
 namespace Catalog.UnitTests.Fixtures;
 public static class ProductsFixtures

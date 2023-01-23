@@ -1,6 +1,6 @@
 using Catalog.API.Controllers;
-using Catalog.API.Entities;
-using Catalog.API.Repositories;
+using Catalog.Core.Entities;
+using Catalog.Core.Repositories;
 using Catalog.UnitTests.Fixtures;
 using FluentAssertions;
 using FluentAssertions.Common;

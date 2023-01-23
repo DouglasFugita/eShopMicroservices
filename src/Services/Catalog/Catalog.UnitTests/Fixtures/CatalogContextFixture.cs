@@ -1,15 +1,10 @@
-﻿using Catalog.API.Data;
-using Catalog.API.Entities;
-using Catalog.API.Repositories;
+﻿using Catalog.Core.Data;
+using Catalog.Core.Entities;
+using Catalog.Core.Repositories;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Catalog.UnitTests.Fixtures;
 public class CatalogContextFixture

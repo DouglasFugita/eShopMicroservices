@@ -1,4 +1,4 @@
-﻿namespace Catalog.API.Data.Models;
+﻿namespace Catalog.Core.Data.Models;
 
 public class DatabaseSettingsModel
 {
