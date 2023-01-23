@@ -1,12 +1,13 @@
 ﻿using Catalog.Core.Data;
 using Catalog.Core.Data.Models;
 using Catalog.Core.Repositories;
+using Catalog.Minimal.API.Products;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace Catalog.API.Configuration;
+namespace Catalog.Minimal.API.Configuration;
 
 public static class DIConfig
 {
@@ -15,6 +16,7 @@ public static class DIConfig
         services.Configure<DatabaseSettingsModel>(configuration.GetSection("DatabaseSettings"));
         services.AddSingleton<ICatalogContext, CatalogContext>();
         services.AddScoped<ICatalogRepository, CatalogRepository>();
+        services.AddScoped<IProductService, ProductService>();
 
         var jaegerUri = configuration.GetValue<string>("JaegerConfiguration:Uri");
         if (jaegerUri is not null)

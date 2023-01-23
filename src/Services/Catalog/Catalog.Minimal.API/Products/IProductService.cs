@@ -1,4 +1,6 @@
-﻿namespace Catalog.Minimal.API.Products;
+﻿using Catalog.Core.Entities;
+
+namespace Catalog.Minimal.API.Products;
 
 public interface IProductService
 {
@@ -6,9 +8,8 @@ public interface IProductService
     void UpdateProduct(Product? product);
     void DeleteProduct(string id);
 
-    IEnumerable<Product> GetProducts();
-    Product? ProductById(string id);
-    IEnumerable<Product> GetProductsByName(string name);
-    IEnumerable<Product> GetProductsByCategory(string categoryName);
-
+    Task<IEnumerable<Product>> GetProducts();
+    Task<Product?> GetProductById(string id);
+    Task<IEnumerable<Product>> GetProductsByName(string name);
+    Task<IEnumerable<Product>> GetProductsByCategory(string categoryName);
 }
