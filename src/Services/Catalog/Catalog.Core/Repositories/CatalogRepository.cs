@@ -1,35 +1,23 @@
 ﻿using Catalog.Core.Data;
 using Catalog.Core.Entities;
+using Common.Resilience;
 using MongoDB.Driver;
 using Polly;
 using Polly.Retry;
 using Polly.Utilities;
 using Polly.Wrap;
 using Serilog;
+using System.Collections.Generic;
 
 namespace Catalog.Core.Repositories;
 
 public class CatalogRepository : ICatalogRepository
 {
     private readonly IMongoCollection<Product> ProductsCollection;
-    private readonly ILogger _logger;
-    private readonly AsyncRetryPolicy retryPolicy;
 
-    public CatalogRepository(ICatalogContext context, ILogger logger)
+    public CatalogRepository(ICatalogContext context)
     {
-        var retryCount = 2;
-        var waitBetweenRetriesInMilliseconds = 2000;
-
         ProductsCollection = context.Products;
-        _logger = logger;
-
-        retryPolicy = Policy
-            .Handle<Exception>()
-            .WaitAndRetryAsync(
-                retryCount: retryCount,
-                sleepDurationProvider: attempt => TimeSpan.FromMilliseconds(waitBetweenRetriesInMilliseconds),
-                onRetry: (exception, retry, context) => _logger.Warning($"Retry count {retry.Milliseconds} exception {exception.Message} context {context.Count}")
-            );
     }
 
     public async Task CreateProduct(Product product)
@@ -65,7 +53,7 @@ public class CatalogRepository : ICatalogRepository
 
     public async Task<IEnumerable<Product>> GetProducts()
     {
-        return await retryPolicy.ExecuteAsync(() => ProductsCollection.Find(p => true).ToListAsync());
+        return await PollyGenericHandler<List<Product>>.GenericPolicyWrapAsync().ExecuteAsync(() => ProductsCollection.Find(p => true).ToListAsync());
     }
 
     public async Task<bool> UpdateProduct(Product product)
