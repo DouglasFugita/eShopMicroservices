@@ -25,6 +25,7 @@ public static class PollyGenericHandler<T> where T: new()
             .Handle<Exception>()
             .FallbackAsync(async (cancelationToken) =>
             {
+                await Task.FromResult(true);
                 return new T();
             },
             async (result) =>
