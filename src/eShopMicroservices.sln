@@ -19,9 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Logging", "BuildingB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks.Tests", "BuildingBlocks\BuildingBlocks.Tests\BuildingBlocks.Tests.csproj", "{1E3087F3-3E7E-4B2B-9710-9AD95F3D4A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Minimal.API", "Services\Catalog\Catalog.Minimal.API\Catalog.Minimal.API.csproj", "{D50682C5-CFB0-40AA-B4EB-C953BA5A8BF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Minimal.API", "Services\Catalog\Catalog.Minimal.API\Catalog.Minimal.API.csproj", "{D50682C5-CFB0-40AA-B4EB-C953BA5A8BF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Core", "Services\Catalog\Catalog.Core\Catalog.Core.csproj", "{0689908C-7A73-4963-A0B5-599E71EF49A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Core", "Services\Catalog\Catalog.Core\Catalog.Core.csproj", "{0689908C-7A73-4963-A0B5-599E71EF49A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Resilience", "BuildingBlocks\Common.Resilience\Common.Resilience.csproj", "{2642B44E-7CC4-4647-99DE-1CC19AFFACFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{0689908C-7A73-4963-A0B5-599E71EF49A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0689908C-7A73-4963-A0B5-599E71EF49A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0689908C-7A73-4963-A0B5-599E71EF49A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2642B44E-7CC4-4647-99DE-1CC19AFFACFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2642B44E-7CC4-4647-99DE-1CC19AFFACFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2642B44E-7CC4-4647-99DE-1CC19AFFACFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2642B44E-7CC4-4647-99DE-1CC19AFFACFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{1E3087F3-3E7E-4B2B-9710-9AD95F3D4A67} = {4B18B01D-8E36-4C20-9B85-67752EE3B617}
 		{D50682C5-CFB0-40AA-B4EB-C953BA5A8BF4} = {9E644FA7-2049-4EDE-86FF-35BFD4A0A9BB}
 		{0689908C-7A73-4963-A0B5-599E71EF49A3} = {9E644FA7-2049-4EDE-86FF-35BFD4A0A9BB}
+		{2642B44E-7CC4-4647-99DE-1CC19AFFACFD} = {4B18B01D-8E36-4C20-9B85-67752EE3B617}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D050A76-ADF3-407B-B38F-535D0C03D7BB}

@@ -14,7 +14,6 @@ builder.Host.UseSerilog(SeriLogger.Configure);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -23,12 +22,5 @@ if (app.Environment.IsDevelopment())
 
 app.MapProductEndpoints();
 app.UseOpenTelemetryPrometheusScrapingEndpoint();
-
-//app.MapGet("/weatherforecast", () =>
-//{
-//    return "Hello World";
-//})
-//.WithName("GetWeatherForecast")
-//.WithOpenApi();
 
 app.Run();

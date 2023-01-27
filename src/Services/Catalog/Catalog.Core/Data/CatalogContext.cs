@@ -3,7 +3,6 @@ using Catalog.Core.Entities;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Extensions.DiagnosticSources;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Catalog.Core.Data;
 
@@ -15,6 +14,8 @@ public class CatalogContext : ICatalogContext
     {
         var clientSettings = MongoClientSettings.FromConnectionString(settings.Value.ConnectionString);
         clientSettings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber());
+        clientSettings.ServerSelectionTimeout = TimeSpan.FromSeconds(5);
+
         var mongoClient = new MongoClient(clientSettings);
 
         var mongoDatabase = mongoClient.GetDatabase(settings.Value.DatabaseName);
