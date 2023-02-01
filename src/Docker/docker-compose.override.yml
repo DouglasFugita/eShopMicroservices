@@ -36,22 +36,22 @@ services:
     ports:
       - "9100:9000"
   
-  mongo-express:
-    container_name: mongo-express
+  catalog-mongoexpress:
+    container_name: catalogMongoExpress
     ports:
       - "8081:8081"
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: dfugita
       ME_CONFIG_BASICAUTH_PASSWORD: MongoExpress
       ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017
+      ME_CONFIG_MONGODB_URL: mongodb://catalogMongodb:27017
     links:
-      - mongodb
+      - catalog-mongodb
     networks:
       - catalog-network
 
-  mongodb:
-    container_name: mongodb
+  catalog-mongodb:
+    container_name: catalogMongodb
     restart: always
     ports:
       - "27017:27017"
@@ -130,11 +130,24 @@ services:
     networks:
       - jaeger-network
 
+  cadvisor:
+    container_name: cadvisor
+    ports:
+    - 18080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - prometheus-network
+      - catalog-network
+
   catalog.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - DatabaseSettings__ConnectionString=mongodb://mongodb:27017
+      - DatabaseSettings__ConnectionString=mongodb://catalogMongodb:27017
       - JaegerConfiguration__Uri=http://jaeger:4317
       - ElasticConfiguration__Uri=http://elasticsearch:9200
     ports:
