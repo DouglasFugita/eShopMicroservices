@@ -7,6 +7,12 @@ The project will start based on .net 7.
 
 [![.net + SonarCloud](https://github.com/DouglasFugita/eShopMicroservices/actions/workflows/main.yml/badge.svg)](https://github.com/DouglasFugita/eShopMicroservices/actions/workflows/main.yml)
 
+## Services
+### Catalog.API
+- MongoDB as database
+- Data, Repository and Entities was segregated to be reused in Catalog Minimal API
+
+
 ## Tests
 - [x] [Sonarqube](https://www.sonarsource.com/products/sonarqube/downloads/) was containerized to be used as the code quality checker.
 - [x] [Sonarlint](https://www.sonarsource.com/products/sonarlint/) was configured at Visual Studio 2022 integrating with Sonarqube
@@ -28,21 +34,23 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 ## CI
 - [x] Github Action
 
-## Logs
+## Observability
+### Logs
 - [x] [ELK Stack](https://www.elastic.co/pt/elastic-stack/) to centralized logging
 - [ ] [Beats](https://www.elastic.co/pt/beats/) to retrieve data from log files
 - [x] [Serilog](https://serilog.net/) for "log file convenience" connecting directly to Elastic
 
-## Metrics
+### Metrics
 - [x] [OpenTelemetry](https://opentelemetry.io/) cloud native option to collect metrics
 - [x] [Prometheus](https://prometheus.io/) time series database to store metrics
 - [x] [Grafana](https://grafana.com/) observability platform to visualize Prometheus data
 
-## Tracing
+### Tracing
 - [x] [OpenTelemetry](https://opentelemetry.io/) cloud native option to send tracing
 - [x] [Jaeger](https://www.jaegertracing.io/) end-to-end distributed tracing
 
 ## Ports
+### Tools Ports
 - Portainer: http://localhost:9000
 - SonarQube: http://localhost:9100/
 - MongoExpress: http://localhost:8081/
@@ -50,3 +58,12 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 - Prometheus: http://localhost:9090/
 - Grafana: http://localhost:3000/
 - Jaeger: http://localhost:16686/
+
+### API Dev Ports
+- Catalog.API: http://localhost:5006
+
+### API Docker Ports
+- Catalog.API: http://localhost:8006
+
+
+
