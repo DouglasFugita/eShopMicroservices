@@ -1,8 +1,5 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
-using Microsoft.Extensions.Caching.Distributed;
-using System.Text.Json;
-using Serilog;
 using Common.Caching;
 
 namespace Catalog.Minimal.API.Products;
@@ -10,7 +7,6 @@ namespace Catalog.Minimal.API.Products;
 public class ProductService : IProductService
 {
     private readonly ICatalogRepository _catalogRepository;
-    //private readonly IDistributedCache _cache;
     private readonly Serilog.ILogger _logger;
     private readonly IRedisCacheProvider _cache;
     public ProductService(ICatalogRepository catalogRepository, IRedisCacheProvider cache, Serilog.ILogger logger)
