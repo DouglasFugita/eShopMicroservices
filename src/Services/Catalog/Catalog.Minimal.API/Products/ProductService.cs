@@ -49,14 +49,20 @@ public class ProductService : IProductService
         var cacheProduct = _cache.GetString(id);
         if (cacheProduct != null)
         {
-            _logger.Information($"Product {id} get from Caching");
+            _logger.Information("Product {id} get from Caching", id);
             return JsonSerializer.Deserialize<Product>(cacheProduct);
         }
         var product = await _catalogRepository.GetProductById(id);
         if (product != null)
         {
-            _logger.Information($"Product {id} get from DB");
-            _cache.SetString(id, JsonSerializer.Serialize(product));
+            var timeout = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(3),
+                SlidingExpiration = TimeSpan.FromMinutes(1),
+            };
+
+            _logger.Information("Product {id} get from DB", id);
+            _cache.SetString(id, JsonSerializer.Serialize(product), timeout);
         }
         return product;
     }
