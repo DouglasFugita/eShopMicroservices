@@ -2,6 +2,7 @@
 using Catalog.Core.Data.Models;
 using Catalog.Core.Repositories;
 using Catalog.Minimal.API.Products;
+using Common.Caching;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -14,6 +15,14 @@ public static class DIConfig
     public static void RegisterServices(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.Configure<DatabaseSettingsModel>(configuration.GetSection("DatabaseSettings"));
+
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetValue<string>("CacheSettings:ConnectionString");
+            options.InstanceName = "CatalogRedisCache";
+        });
+        services.AddSingleton<IRedisCacheProvider, RedisCacheProvider>();
+
         services.AddSingleton<ICatalogContext, CatalogContext>();
         services.AddScoped<ICatalogRepository, CatalogRepository>();
         services.AddScoped<IProductService, ProductService>();

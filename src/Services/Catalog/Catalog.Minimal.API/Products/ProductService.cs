@@ -3,15 +3,17 @@ using Catalog.Core.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using Serilog;
+using Common.Caching;
 
 namespace Catalog.Minimal.API.Products;
 
 public class ProductService : IProductService
 {
     private readonly ICatalogRepository _catalogRepository;
-    private readonly IDistributedCache _cache;
+    //private readonly IDistributedCache _cache;
     private readonly Serilog.ILogger _logger;
-    public ProductService(ICatalogRepository catalogRepository, IDistributedCache cache, Serilog.ILogger logger)
+    private readonly IRedisCacheProvider _cache;
+    public ProductService(ICatalogRepository catalogRepository, IRedisCacheProvider cache, Serilog.ILogger logger)
     {
         _catalogRepository = catalogRepository;
         _cache = cache;
@@ -22,11 +24,13 @@ public class ProductService : IProductService
     {
         if (product is null) { throw new ArgumentNullException(nameof(product)); }
         _catalogRepository.CreateProduct(product);
+        _cache.Set<Product>(product.Id, product);
     }
 
     public void DeleteProduct(string id)
     {
         _catalogRepository.DeleteProduct(id);
+        _cache.Remove<Product>(id);
     }
 
     public async Task<IEnumerable<Product>> GetProducts()
@@ -46,23 +50,17 @@ public class ProductService : IProductService
 
     public async Task<Product?> GetProductById(string id)
     {
-        var cacheProduct = _cache.GetString(id);
+        var cacheProduct = _cache.Get<Product>(id);
         if (cacheProduct != null)
         {
             _logger.Information("Product {id} get from Caching", id);
-            return JsonSerializer.Deserialize<Product>(cacheProduct);
+            return cacheProduct;
         }
         var product = await _catalogRepository.GetProductById(id);
         if (product != null)
         {
-            var timeout = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(3),
-                SlidingExpiration = TimeSpan.FromMinutes(1),
-            };
-
             _logger.Information("Product {id} get from DB", id);
-            _cache.SetString(id, JsonSerializer.Serialize(product), timeout);
+            _cache.Set<Product>(id, product);
         }
         return product;
     }
@@ -71,5 +69,6 @@ public class ProductService : IProductService
     {
         if (product is null) { throw new ArgumentNullException(nameof(product)); }
         _catalogRepository.UpdateProduct(product);
+        _cache.Set<Product>(product.Id, product);
     }
 }

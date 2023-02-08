@@ -7,11 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.RegisterServices(builder.Configuration);
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
-    options.InstanceName = "CatalogRedisCache";
-});
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
