@@ -9,8 +9,10 @@ The project will start based on .net 7.
 
 ## Services
 ### Catalog.API
-- MongoDB as database
-- Data, Repository and Entities was segregated to be reused in Catalog Minimal API
+- [x] MongoDB as main database
+- [x] Data, Repository and Entities segregated to be reused in Catalog Minimal API
+- [ ] Redis as cache
+- [ ] RabbitMQ as message broker to queue email sending
 
 
 ## Tests

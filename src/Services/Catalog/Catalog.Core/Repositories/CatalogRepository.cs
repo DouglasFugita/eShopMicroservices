@@ -2,12 +2,6 @@
 using Catalog.Core.Entities;
 using Common.Resilience;
 using MongoDB.Driver;
-using Polly;
-using Polly.Retry;
-using Polly.Utilities;
-using Polly.Wrap;
-using Serilog;
-using System.Collections.Generic;
 
 namespace Catalog.Core.Repositories;
 

@@ -1,17 +1,21 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
-using Catalog.Minimal.API.Products;
-using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
+using Serilog;
 
 namespace Catalog.Minimal.API.Products;
 
 public class ProductService : IProductService
 {
     private readonly ICatalogRepository _catalogRepository;
-
-    public ProductService(ICatalogRepository catalogRepository)
+    private readonly IDistributedCache _cache;
+    private readonly Serilog.ILogger _logger;
+    public ProductService(ICatalogRepository catalogRepository, IDistributedCache cache, Serilog.ILogger logger)
     {
         _catalogRepository = catalogRepository;
+        _cache = cache;
+        _logger = logger;
     }
 
     public void CreateProduct(Product? product)
@@ -42,7 +46,19 @@ public class ProductService : IProductService
 
     public async Task<Product?> GetProductById(string id)
     {
-        return await _catalogRepository.GetProductById(id);
+        var cacheProduct = _cache.GetString(id);
+        if (cacheProduct != null)
+        {
+            _logger.Information($"Product {id} get from Caching");
+            return JsonSerializer.Deserialize<Product>(cacheProduct);
+        }
+        var product = await _catalogRepository.GetProductById(id);
+        if (product != null)
+        {
+            _logger.Information($"Product {id} get from DB");
+            _cache.SetString(id, JsonSerializer.Serialize(product));
+        }
+        return product;
     }
 
     public void UpdateProduct(Product? product)
