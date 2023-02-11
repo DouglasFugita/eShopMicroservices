@@ -1,5 +1,7 @@
+using Catalog.Core.Entities;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text.Json;
 
 namespace Catalog.EmailWorker;
 
@@ -33,11 +35,22 @@ public class Worker : BackgroundService
         {
             var body = ea.Body.ToArray();
             var message = System.Text.Encoding.UTF8.GetString(body);
-            _logger.LogInformation("[x] {Worker} sending email... {message}", ea.ConsumerTag, message);
-            //System.Threading.Thread.Sleep(10000);
+            Product? product = null;
+
+            try
+            {
+                product = JsonSerializer.Deserialize<Product>(message);
+            } catch(Exception)
+            {
+                channel.BasicReject(ea.DeliveryTag, false);
+                _logger.LogError("Email Worker - Warning:{Event} | Worker: {Worker} | Message:{message}", "Message reject due deserialization error", ea.ConsumerTag, message);
+                return;
+            }
+            
+            _logger.LogInformation("Email Worker - Event:{Event} | Worker: {Worker} | Message:{message}", "Sending Email", ea.ConsumerTag, message);
             await Task.Delay(10000, stoppingToken);
             channel.BasicAck(ea.DeliveryTag, false);
-            _logger.LogInformation("{Worker} Email sent. Message Acked. {message}", ea.ConsumerTag, message);
+            _logger.LogInformation("Email Worker - Event:{Event} | Worker: {Worker} | Message Acked:{message}","Email Sent", ea.ConsumerTag, message);
         };
 
         channel.BasicConsume(queue, autoAck: false, consumer);
