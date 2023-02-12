@@ -9,6 +9,7 @@
 coverage.xml
 .env
 prometheus.yml
+agent.yaml
 
 # User-specific files
 *.rsuser
