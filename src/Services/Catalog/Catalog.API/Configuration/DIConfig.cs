@@ -16,8 +16,9 @@ public static class DIConfig
         services.AddSingleton<ICatalogContext, CatalogContext>();
         services.AddScoped<ICatalogRepository, CatalogRepository>();
 
-        var jaegerUri = configuration.GetValue<string>("JaegerConfiguration:Uri");
-        if (jaegerUri is not null)
+        var tracingUri = configuration.GetValue<string>("TracingConfiguration:Uri");
+
+        if (tracingUri is not null)
         {
             services.AddOpenTelemetry()
                 .WithMetrics(metricBuilder => metricBuilder
@@ -32,7 +33,7 @@ public static class DIConfig
                     .AddAspNetCoreInstrumentation()
                     .AddMongoDBInstrumentation()
                     .AddOtlpExporter(options =>
-                options.Endpoint = new Uri(jaegerUri))
+                options.Endpoint = new Uri(tracingUri))
             )
             .StartWithHost();
 
