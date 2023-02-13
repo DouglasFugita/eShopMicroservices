@@ -44,12 +44,16 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 
 ### Metrics
 - [x] [OpenTelemetry](https://opentelemetry.io/) cloud native option to collect metrics
+- [x] ~~[Grafana Agent](https://grafana.com/docs/grafana-cloud/data-configuration/agent/) to export metrics to Grafana Labs~~ (removed cause didn't work for Tracing)
+- [x] [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) to export metrics to Grafana Labs.
 - [x] [Prometheus](https://prometheus.io/) time series database to store metrics
 - [x] [Grafana](https://grafana.com/) observability platform to visualize Prometheus data
 
 ### Tracing
 - [x] [OpenTelemetry](https://opentelemetry.io/) cloud native option to send tracing
-- [x] [Jaeger](https://www.jaegertracing.io/) end-to-end distributed tracing
+- [x] ~~[Jaeger](https://www.jaegertracing.io/) end-to-end distributed tracing~~ (changed to Grafana Labs Tempo)
+- [x] [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) to export tracing to Grafana Labs. (Grafana Agent didn't work in this scenario)
+- [x] [Grafana Tempo](https://grafana.com/oss/tempo/) using Grafana Labs to store and explore tracing data
 
 ## Ports
 ### Tools Ports

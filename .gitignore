@@ -10,6 +10,7 @@ coverage.xml
 .env
 prometheus.yml
 agent.yaml
+otelcollector.yaml
 
 # User-specific files
 *.rsuser
