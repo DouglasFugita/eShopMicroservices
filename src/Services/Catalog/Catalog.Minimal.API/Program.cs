@@ -13,7 +13,6 @@ builder.Services.RegisterServices(builder.Configuration);
 var connectionFactory = new ConnectionFactory {
     Uri = new Uri(builder.Configuration.GetValue<string>("QueueSettings:ConnectionString"))
 };
-
 builder.Services.AddSingleton<IConnectionFactory>(connectionFactory);
 
 

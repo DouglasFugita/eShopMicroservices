@@ -3,10 +3,14 @@ using Catalog.Core.Data.Models;
 using Catalog.Core.Repositories;
 using Catalog.Minimal.API.Products;
 using Common.Caching;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using RabbitMQ.Client;
+using StackExchange.Redis;
 
 namespace Catalog.Minimal.API.Configuration;
 
@@ -16,34 +20,54 @@ public static class DIConfig
     {
         services.Configure<DatabaseSettingsModel>(configuration.GetSection("DatabaseSettings"));
 
+        var redisUri = configuration.GetValue<string>("CacheSettings:ConnectionString");
         services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = configuration.GetValue<string>("CacheSettings:ConnectionString");
+            options.Configuration = redisUri;
             options.InstanceName = "CatalogRedisCache";
         });
+
+
+        // var redisConnection = ConnectionMultiplexer.Connect(redisUri);
+        //services.AddSingleton<IConnectionMultiplexer>(redisConnection);
+
         services.AddSingleton<IRedisCacheProvider, RedisCacheProvider>();
+
+        var connectionFactory = new ConnectionFactory
+        {
+            Uri = new Uri(configuration.GetValue<string>("QueueSettings:ConnectionString"))
+        };
+        services.AddSingleton<IConnectionFactory>(connectionFactory);
+
+
 
         services.AddSingleton<ICatalogContext, CatalogContext>();
         services.AddScoped<ICatalogRepository, CatalogRepository>();
         services.AddScoped<IProductService, ProductService>();
 
-        var jaegerUri = configuration.GetValue<string>("JaegerConfiguration:Uri");
-        if (jaegerUri is not null)
+        var tracingUri = configuration.GetValue<string>("TracingConfiguration:Uri");
+        if (tracingUri is not null)
         {
             services.AddOpenTelemetry()
                 .WithMetrics(metricBuilder => metricBuilder
                     .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
                     .AddPrometheusExporter())
                 .WithTracing(tracingBuilder => tracingBuilder
                     .AddSource("Catalog")
                     .SetResourceBuilder(
                         ResourceBuilder.CreateDefault()
-                            .AddService(serviceName: "Catalog", serviceVersion: "1.0")
+                            .AddService(serviceName: "CatalogMinimalAPI", serviceVersion: "1.0")
                             .AddTelemetrySdk())
                     .AddAspNetCoreInstrumentation()
                     .AddMongoDBInstrumentation()
+                    .ConfigureBuilder((sp, configure) =>
+                    {
+                        RedisCache redisCache = (RedisCache)sp.GetRequiredService<IDistributedCache>();
+                        configure.AddRedisInstrumentation(redisCache.GetConnection());
+                    })
                     .AddOtlpExporter(options =>
-                options.Endpoint = new Uri(jaegerUri))
+                options.Endpoint = new Uri(tracingUri))
             )
             .StartWithHost();
 
