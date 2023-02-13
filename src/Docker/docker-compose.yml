@@ -25,14 +25,17 @@ services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
 
-  grafana:
-    image: grafana/grafana
+  otel-collector:
+    image: otel/opentelemetry-collector
 
-  prometheus:
-    image: prom/prometheus
+  # grafana:
+  #   image: grafana/grafana
 
-  jaeger: 
-    image: jaegertracing/all-in-one:latest
+#  prometheus:
+#    image: prom/prometheus
+
+  # jaeger: 
+  #   image: jaegertracing/all-in-one:latest
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest

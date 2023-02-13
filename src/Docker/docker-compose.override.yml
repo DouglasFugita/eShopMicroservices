@@ -96,41 +96,57 @@ services:
     networks:
       - catalog-network
 
-  grafana:
-    container_name: grafana
-    ports:
-      - 3000:3000
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
+  otel-collector:
+    container_name: otelcollector
+    command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
-      - grafana_data:/var/lib/grafana
-    networks:
-      - prometheus-network
-
-  prometheus:
-    container_name: prometheus
+      - ./prometheus/otelcollector.yaml:/etc/otel-collector-config.yaml
     ports:
-      - 9090:9090
-    volumes:
-      - prometheus_data:/prometheus
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      #- "1888:1888" # pprof extension
+      #- "8888:8888" # Prometheus metrics exposed by the collector
+      #- "8889:8889" # Prometheus exporter metrics
+      #- "13133:13133" # health_check extension
+      - "4317:4317" # OTLP gRPC receiver
+      #- "4318:4318" # OTLP http receiver
+      #- "55679:55679" # zpages extension
     networks:
-      - prometheus-network
+      - catalog-network         
 
-  jaeger: 
-    container_name: jaeger
-    environment:
-      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
-      - COLLECTOR_OTLP_ENABLED=true
-    ports:
-      - "6831:6831/udp"
-      - "16686:16686"
-      - "9411:9411"
-      - 14268:14268
-      - 4317:4317
-    networks:
-      - jaeger-network
+  #prometheus:
+  #  container_name: prometheus
+  #  ports:
+  #    - 9090:9090
+  #  volumes:
+  #    - prometheus_data:/prometheus
+  #    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #  networks:
+  #    - prometheus-network
+
+  # grafana:
+  #   container_name: grafana
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     GF_SECURITY_ADMIN_USER: admin
+  #     GF_SECURITY_ADMIN_PASSWORD: admin
+  #   volumes:
+  #     - grafana_data:/var/lib/grafana
+  #   networks:
+  #     - prometheus-network
+
+  # jaeger: 
+  #  container_name: jaeger
+  #  environment:
+  #    - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+  #    - COLLECTOR_OTLP_ENABLED=true
+  #  ports:
+  #    - "6831:6831/udp"
+  #    - "16686:16686"
+  #    - "9411:9411"
+  #    - 14268:14268
+  #    - 4317:4317
+  #  networks:
+  #    - jaeger-network
 
   cadvisor:
     container_name: cadvisor
@@ -150,7 +166,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - DatabaseSettings__ConnectionString=mongodb://catalogMongodb:27017
-      - JaegerConfiguration__Uri=http://jaeger:4317
+      - TracingConfiguration__Uri=http://otelcollector:4317
       - ElasticConfiguration__Uri=http://elasticsearch:9200
     ports:
       - 8006:80
