@@ -10,9 +10,9 @@ The project will start based on .net 7.
 ## Services
 ### Catalog.API
 - [x] MongoDB as main database
+- [x] Redis as cache 
 - [x] Data, Repository and Entities segregated to be reused in Catalog Minimal API
-- [x] Redis as cache
-- [ ] RabbitMQ as message broker to queue email sending
+- [x] RabbitMQ as message broker to queue email sending
 
 
 ## Tests
@@ -39,7 +39,6 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 ## Observability
 ### Logs
 - [x] [ELK Stack](https://www.elastic.co/pt/elastic-stack/) to centralized logging
-- [ ] [Beats](https://www.elastic.co/pt/beats/) to retrieve data from log files
 - [x] [Serilog](https://serilog.net/) for "log file convenience" connecting directly to Elastic
 
 ### Metrics
@@ -61,9 +60,9 @@ dotnet sonarscanner end /d:sonar.login=[sonarqube code]
 - SonarQube: http://localhost:9100/
 - MongoExpress: http://localhost:8081/
 - Kibana: http://localhost:9010/
-- Prometheus: http://localhost:9090/
-- Grafana: http://localhost:3000/
-- Jaeger: http://localhost:16686/
+- ~~Prometheus: http://localhost:9090/~~
+- ~~Grafana: http://localhost:3000/~~
+- ~~Jaeger: http://localhost:16686/~~
 
 ### API Dev Ports
 - Catalog.API: http://localhost:5006
