@@ -3,6 +3,7 @@ using Catalog.Core.Data.Models;
 using Catalog.Core.Repositories;
 using Catalog.Minimal.API.Products;
 using Common.Caching;
+using FluentValidation;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using OpenTelemetry;
@@ -18,7 +19,13 @@ public static class DIConfig
 {
     public static void RegisterServices(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.Configure<DatabaseSettingsModel>(configuration.GetSection("DatabaseSettings"));
+
+        services.AddValidatorsFromAssemblyContaining<DatabaseSettingsModelValidator>(ServiceLifetime.Singleton);
+        services
+            .AddOptions<DatabaseSettingsModel>()
+            .Bind(configuration.GetSection(DatabaseSettingsModel.SectionName))
+            .ValidateFluently()
+            .ValidateOnStart();
 
         var redisUri = configuration.GetValue<string>("CacheSettings:ConnectionString");
         services.AddStackExchangeRedisCache(options =>

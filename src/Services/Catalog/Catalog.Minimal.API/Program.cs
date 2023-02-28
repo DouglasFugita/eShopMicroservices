@@ -1,8 +1,6 @@
 using Catalog.Minimal.API.Configuration;
 using Catalog.Minimal.API.Products;
 using Common.Logging;
-using Microsoft.Extensions.Configuration;
-using Polly;
 using RabbitMQ.Client;
 using Serilog;
 
