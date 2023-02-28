@@ -6,15 +6,21 @@ namespace Catalog.Minimal.API.Products;
 
 public static class ProductEndpoints
 {
-    public static void MapProductEndpoints(this WebApplication app)
+    private static RouteGroupBuilder MapCatalogApi(this RouteGroupBuilder group)
     {
-        app.MapGet("api/v1/catalog", GetAllProducts);
-        app.MapGet("api/v1/catalog/{id}", GetProductById).WithName("GetProduct");
-        app.MapGet("api/v1/catalog/GetProductByCategory/{id}", GetProductsByCategory);
-        app.MapGet("api/v1/catalog/GetProductByName/{id}", GetProductsByName);
-        app.MapPost("api/v1/catalog", CreateProduct);
-        app.MapPut("api/v1/catalog", UpdateProduct);
-        app.MapDelete("api/v1/catalog", DeleteProduct);
+        group.MapGet("/", GetAllProducts);
+        group.MapGet("/{id}", GetProductById).WithName("GetProduct");
+        group.MapGet("/GetProductByCategory/{id}", GetProductsByCategory);
+        group.MapGet("/catalog/GetProductByName/{id}", GetProductsByName);
+        group.MapPost("/", CreateProduct);
+        group.MapPut("/", UpdateProduct);
+        group.MapDelete("/", DeleteProduct);
+
+        return group;
+    }
+    public static void MapCatalogEndpoints(this WebApplication app)
+    {
+        app.MapGroup("api/v1/catalog").MapCatalogApi();
     }
 
     public static async Task<IResult> GetAllProducts(IProductService service)

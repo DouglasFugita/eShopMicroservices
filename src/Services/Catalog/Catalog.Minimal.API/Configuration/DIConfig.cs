@@ -27,10 +27,6 @@ public static class DIConfig
             options.InstanceName = "CatalogRedisCache";
         });
 
-
-        // var redisConnection = ConnectionMultiplexer.Connect(redisUri);
-        //services.AddSingleton<IConnectionMultiplexer>(redisConnection);
-
         services.AddSingleton<IRedisCacheProvider, RedisCacheProvider>();
 
         var connectionFactory = new ConnectionFactory

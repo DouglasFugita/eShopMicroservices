@@ -29,7 +29,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapProductEndpoints();
+app.MapCatalogEndpoints();
+
 app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 app.Run();
