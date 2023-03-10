@@ -3,19 +3,13 @@ using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using Catalog.UnitTests.Fixtures;
 using FluentAssertions;
-using FluentAssertions.Common;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using Moq;
-using System.Text;
 
 namespace Catalog.UnitTests.API.Controllers;
 
 public class ControllerTests
 {
-
     [Fact]
     public async Task GetProducts_OnSuccess_ReturnStatusCode200()
     {
@@ -34,7 +28,8 @@ public class ControllerTests
         {
             result.StatusCode.Should().Be(200);
             result.Value.Should().BeOfType<List<Product>>();
-        } else
+        }
+        else
         {
             Assert.Fail("result is null");
         }
@@ -87,13 +82,13 @@ public class ControllerTests
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.GetProductById(It.IsAny<String>()))
+        mockCatalogRepository.Setup(service => service.GetProductById(It.IsAny<string>()))
             .ReturnsAsync(() => null);
 
         var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var actionResult = await controller.GetProductById(It.IsAny<String>());
+        var actionResult = await controller.GetProductById(It.IsAny<string>());
 
         //Assert
         var result = actionResult.Result as NotFoundResult;
@@ -105,13 +100,13 @@ public class ControllerTests
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.GetProductByCategory(It.IsAny<String>()))
+        mockCatalogRepository.Setup(service => service.GetProductByCategory(It.IsAny<string>()))
             .ReturnsAsync(ProductsFixtures.GetFakeProduct.Generate(2));
 
         var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var actionResult = await controller.GetProductByCategory(It.IsAny<String>());
+        var actionResult = await controller.GetProductByCategory(It.IsAny<string>());
 
         //Assert
         if (actionResult.Result is OkObjectResult result)
@@ -130,13 +125,13 @@ public class ControllerTests
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.GetProductByCategory(It.IsAny<String>()))
+        mockCatalogRepository.Setup(service => service.GetProductByCategory(It.IsAny<string>()))
             .ReturnsAsync(new List<Product>());
 
         var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var actionResult = await controller.GetProductByCategory(It.IsAny<String>());
+        var actionResult = await controller.GetProductByCategory(It.IsAny<string>());
 
         //Assert
         var result = actionResult.Result as NotFoundResult;
@@ -148,13 +143,13 @@ public class ControllerTests
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.GetProductByName(It.IsAny<String>()))
+        mockCatalogRepository.Setup(service => service.GetProductByName(It.IsAny<string>()))
             .ReturnsAsync(ProductsFixtures.GetFakeProduct.Generate(2).ToList());
 
         var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var actionResult = await controller.GetProductByName(It.IsAny<String>());
+        var actionResult = await controller.GetProductByName(It.IsAny<string>());
 
         //Assert
         if (actionResult.Result is OkObjectResult result)
@@ -173,13 +168,13 @@ public class ControllerTests
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.GetProductByName(It.IsAny<String>()))
+        mockCatalogRepository.Setup(service => service.GetProductByName(It.IsAny<string>()))
             .ReturnsAsync(new List<Product>());
 
         var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var actionResult = await controller.GetProductByName(It.IsAny<String>());
+        var actionResult = await controller.GetProductByName(It.IsAny<string>());
 
         //Assert
         var result = actionResult.Result as NotFoundResult;
@@ -243,19 +238,19 @@ public class ControllerTests
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.DeleteProduct(It.IsAny<String>()))
+        mockCatalogRepository.Setup(service => service.DeleteProduct(It.IsAny<string>()))
             .ReturnsAsync(true);
 
         var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var actionResult = await controller.DeleteProduct(It.IsAny<String>());
+        var actionResult = await controller.DeleteProduct(It.IsAny<string>());
 
         //Assert
         if (actionResult is OkObjectResult result)
         {
             result.StatusCode.Should().Be(200);
-            mockCatalogRepository.Verify(x => x.DeleteProduct(It.IsAny<String>()), Times.Once());
+            mockCatalogRepository.Verify(x => x.DeleteProduct(It.IsAny<string>()), Times.Once());
         }
         else
         {

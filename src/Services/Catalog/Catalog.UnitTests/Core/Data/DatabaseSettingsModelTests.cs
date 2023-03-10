@@ -1,19 +1,14 @@
 ﻿using Bogus;
 using Catalog.Core.Data.Models;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Catalog.UnitTests.Data;
+
 public class DatabaseSettingsModelTests
 {
     [Fact]
     public void DatabaseSettingsModel_OnCreation_ObjectCreated()
     {
-
         //Arrange
         var settingsFaker = new Faker<DatabaseSettingsModel>()
             .RuleFor(s => s.ConnectionString, f => f.Random.Uuid().ToString())
@@ -27,7 +22,7 @@ public class DatabaseSettingsModelTests
         {
             ConnectionString = settings.ConnectionString,
             DatabaseName = settings.DatabaseName,
-            CollectionName = settings.CollectionName,
+            CollectionName = settings.CollectionName
         };
 
         //Assert
@@ -35,5 +30,4 @@ public class DatabaseSettingsModelTests
         sut.DatabaseName.Should().Be(settings.DatabaseName);
         sut.CollectionName.Should().Be(settings.CollectionName);
     }
-
 }

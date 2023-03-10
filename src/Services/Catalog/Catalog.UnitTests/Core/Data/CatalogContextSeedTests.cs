@@ -4,9 +4,9 @@ using MongoDB.Driver;
 using Moq;
 
 namespace Catalog.UnitTests.Data;
+
 public class CatalogContextSeedTests
 {
-
     [Fact]
     public async Task SeedData_OnAnyData_DoNotCallInsertMethod()
     {
@@ -18,7 +18,9 @@ public class CatalogContextSeedTests
         await CatalogContextSeed.SeedData(mockproductCollection.Object);
 
         // Assert
-        mockproductCollection.Verify(x => x.InsertManyAsync(It.IsAny<IEnumerable<Product>>(), It.IsAny<InsertManyOptions>(), It.IsAny<CancellationToken>()), Times.Never);
+        mockproductCollection.Verify(
+            x => x.InsertManyAsync(It.IsAny<IEnumerable<Product>>(), It.IsAny<InsertManyOptions>(),
+                It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -31,21 +33,24 @@ public class CatalogContextSeedTests
         await CatalogContextSeed.SeedData(mockproductCollection.Object);
 
         // Assert
-        mockproductCollection.Verify(x => x.InsertManyAsync(It.IsAny<IEnumerable<Product>>(), It.IsAny<InsertManyOptions>(), It.IsAny<CancellationToken>()), Times.Once);
+        mockproductCollection.Verify(
+            x => x.InsertManyAsync(It.IsAny<IEnumerable<Product>>(), It.IsAny<InsertManyOptions>(),
+                It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    public static Mock<IMongoCollection<Product>> MockProductCollection (int countDocumentReturns)
+    public static Mock<IMongoCollection<Product>> MockProductCollection(int countDocumentReturns)
     {
         var MockProductCollection = new Mock<IMongoCollection<Product>>();
         MockProductCollection.Setup(
-            x => x.InsertManyAsync(It.IsAny<IEnumerable<Product>>(), It.IsAny<InsertManyOptions>(), It.IsAny<CancellationToken>()))
+                x => x.InsertManyAsync(It.IsAny<IEnumerable<Product>>(), It.IsAny<InsertManyOptions>(),
+                    It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         MockProductCollection.Setup(
-            x => x.CountDocuments(It.IsAny<FilterDefinition<Product>>(), It.IsAny<CountOptions>(), It.IsAny<CancellationToken>()))
+                x => x.CountDocuments(It.IsAny<FilterDefinition<Product>>(), It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
             .Returns(countDocumentReturns);
 
         return MockProductCollection;
     }
-
 }

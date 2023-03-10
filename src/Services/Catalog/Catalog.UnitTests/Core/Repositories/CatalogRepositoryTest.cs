@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using Moq;
 
 namespace Catalog.UnitTests.Repositories;
+
 public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
 {
     private readonly CatalogContextFixture _fixture;
@@ -28,7 +29,9 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
         await _fixture.CatalogRepository.CreateProduct(_fixture.ExampleProduct);
 
         //Assert
-        _fixture.MockProductCollection.Verify(x => x.InsertOneAsync(It.IsAny<Product>(), It.IsAny<InsertOneOptions>(), It.IsAny<CancellationToken>()), Times.Once());
+        _fixture.MockProductCollection.Verify(
+            x => x.InsertOneAsync(It.IsAny<Product>(), It.IsAny<InsertOneOptions>(), It.IsAny<CancellationToken>()),
+            Times.Once());
     }
 
     [Fact]
@@ -37,13 +40,14 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
         //Arrange
         _fixture.MockProductCollection
             .Setup(
-                x => x.DeleteOneAsync(It.IsAny<FilterDefinition<Product>>(),It.IsAny<CancellationToken>()))
+                x => x.DeleteOneAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new DeleteResult.Acknowledged(1));
         //Act
         await _fixture.CatalogRepository.DeleteProduct("id");
 
         //Assert
-        _fixture.MockProductCollection.Verify(x => x.DeleteOneAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<CancellationToken>()), Times.Once());
+        _fixture.MockProductCollection.Verify(
+            x => x.DeleteOneAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<CancellationToken>()), Times.Once());
     }
 
     [Fact]
@@ -53,15 +57,16 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
         _fixture.MockProductCollection
             .Setup(
                 x => x.ReplaceOneAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<Product>(),
-                It.IsAny<ReplaceOptions>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ReplaceOneResult.Acknowledged(1,1,new BsonString("string")));
+                    It.IsAny<ReplaceOptions>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ReplaceOneResult.Acknowledged(1, 1, new BsonString("string")));
 
         //Act
         await _fixture.CatalogRepository.UpdateProduct(_fixture.ExampleProduct);
 
         //Assert
-        _fixture.MockProductCollection.Verify(x => x.ReplaceOneAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<Product>(),
-                It.IsAny<ReplaceOptions>(), It.IsAny<CancellationToken>()), Times.Once());
+        _fixture.MockProductCollection.Verify(x => x.ReplaceOneAsync(It.IsAny<FilterDefinition<Product>>(),
+            It.IsAny<Product>(),
+            It.IsAny<ReplaceOptions>(), It.IsAny<CancellationToken>()), Times.Once());
     }
 
 
@@ -71,14 +76,17 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
         //Arrange
         _fixture.MockProductCollection
             .Setup(
-                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>()))
+                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                    It.IsAny<CancellationToken>()))
             .ReturnsAsync(_fixture.MockCursor.Object);
 
         //Act
         await _fixture.CatalogRepository.GetProducts();
 
         //Assert
-        _fixture.MockProductCollection.Verify(x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
+        _fixture.MockProductCollection.Verify(
+            x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                It.IsAny<CancellationToken>()), Times.AtLeastOnce);
     }
 
     [Fact]
@@ -87,32 +95,35 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
         //Arrange
         _fixture.MockProductCollection
             .Setup(
-                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>())
-                )
+                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                    It.IsAny<CancellationToken>())
+            )
             .ReturnsAsync(_fixture.MockCursor.Object);
 
         //Act
         await _fixture.CatalogRepository.GetProductByName(_fixture.FilterParam);
 
         //Assert
-        _fixture.MockProductCollection.Verify(x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
+        _fixture.MockProductCollection.Verify(
+            x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                It.IsAny<CancellationToken>()), Times.AtLeastOnce);
     }
 
     [Fact]
     public async Task GetProductsByName_OnSuccess_WithValidFilter()
     {
         //Arrange
-        var renderedExpectedFilter = CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Name, _fixture.FilterParam));
+        var renderedExpectedFilter =
+            CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Name, _fixture.FilterParam));
         var renderedCreatedFilter = new BsonDocument();
 
         _fixture.MockProductCollection
             .Setup(
-                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>())
-                )
+                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                    It.IsAny<CancellationToken>())
+            )
             .Callback<FilterDefinition<Product>, FindOptions<Product, Product>, CancellationToken>(
-                (x, y, z) => {
-                    renderedCreatedFilter = CatalogContextFixture.FilterRender(x);
-                })
+                (x, y, z) => { renderedCreatedFilter = CatalogContextFixture.FilterRender(x); })
             .ReturnsAsync(_fixture.MockCursor.Object);
 
         //Act
@@ -128,32 +139,35 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
         //Arrange
         _fixture.MockProductCollection
             .Setup(
-                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>())
-                )
+                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                    It.IsAny<CancellationToken>())
+            )
             .ReturnsAsync(_fixture.MockCursor.Object);
 
         //Act
         await _fixture.CatalogRepository.GetProductById(_fixture.FilterParam);
 
         //Assert
-        _fixture.MockProductCollection.Verify(x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
+        _fixture.MockProductCollection.Verify(
+            x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                It.IsAny<CancellationToken>()), Times.AtLeastOnce);
     }
 
     [Fact]
     public async Task GetProductsById_OnSuccess_WithValidFilter()
     {
         //Arrange
-        var renderedExpectedFilter = CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Id, _fixture.FilterIdParam));
+        var renderedExpectedFilter =
+            CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Id, _fixture.FilterIdParam));
         var renderedCreatedFilter = new BsonDocument();
 
         _fixture.MockProductCollection
             .Setup(
-                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>())
-                )
+                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                    It.IsAny<CancellationToken>())
+            )
             .Callback<FilterDefinition<Product>, FindOptions<Product, Product>, CancellationToken>(
-                (x, y, z) => {
-                    renderedCreatedFilter = CatalogContextFixture.FilterRender(x);
-                })
+                (x, y, z) => { renderedCreatedFilter = CatalogContextFixture.FilterRender(x); })
             .ReturnsAsync(_fixture.MockCursor.Object);
 
         //Act
@@ -169,32 +183,35 @@ public class CatalogRepositoryTest : IClassFixture<CatalogContextFixture>
         //Arrange
         _fixture.MockProductCollection
             .Setup(
-                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>())
-                )
+                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                    It.IsAny<CancellationToken>())
+            )
             .ReturnsAsync(_fixture.MockCursor.Object);
 
         //Act
         await _fixture.CatalogRepository.GetProductByCategory(_fixture.FilterParam);
 
         //Assert
-        _fixture.MockProductCollection.Verify(x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
+        _fixture.MockProductCollection.Verify(
+            x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                It.IsAny<CancellationToken>()), Times.AtLeastOnce);
     }
 
     [Fact]
     public async Task GetProductsByCategory_OnSuccess_WithValidFilter()
     {
         //Arrange
-        var renderedExpectedFilter = CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Category, _fixture.FilterParam));
+        var renderedExpectedFilter =
+            CatalogContextFixture.FilterRender(Builders<Product>.Filter.Eq(p => p.Category, _fixture.FilterParam));
         var renderedCreatedFilter = new BsonDocument();
 
         _fixture.MockProductCollection
             .Setup(
-                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(), It.IsAny<CancellationToken>())
-                )
+                x => x.FindAsync(It.IsAny<FilterDefinition<Product>>(), It.IsAny<FindOptions<Product, Product>>(),
+                    It.IsAny<CancellationToken>())
+            )
             .Callback<FilterDefinition<Product>, FindOptions<Product, Product>, CancellationToken>(
-                (x, y, z) => {
-                    renderedCreatedFilter = CatalogContextFixture.FilterRender(x);
-                })
+                (x, y, z) => { renderedCreatedFilter = CatalogContextFixture.FilterRender(x); })
             .ReturnsAsync(_fixture.MockCursor.Object);
 
         //Act

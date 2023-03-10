@@ -2,9 +2,7 @@
 using Catalog.Minimal.API.Products;
 using Catalog.UnitTests.Fixtures;
 using FluentAssertions;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Catalog.UnitTests.MinimalAPI;
@@ -27,6 +25,7 @@ public class ProductEndpointsTests
         var okResult = (Ok<IEnumerable<Product>>)result;
         okResult.Value.Should().BeOfType<List<Product>>();
     }
+
     [Fact]
     public async Task GetAllProducts_ReturnsNotFoundResult()
     {
@@ -40,7 +39,8 @@ public class ProductEndpointsTests
 
         //Assert
         result.Should().BeOfType<NotFound>();
-    }    
+    }
+
     [Fact]
     public async Task GetProductById_ReturnsOkResult()
     {
@@ -57,6 +57,7 @@ public class ProductEndpointsTests
         var okResult = (Ok<Product>)result;
         okResult.Value.Should().BeOfType<Product>();
     }
+
     [Fact]
     public async Task GetProductById_ReturnsNoFoundResult()
     {
@@ -70,7 +71,8 @@ public class ProductEndpointsTests
 
         //Assert
         result.Should().BeOfType<NotFound>();
-    } 
+    }
+
     [Fact]
     public async Task GetProductsByCategory_ReturnsOkResult()
     {
@@ -87,6 +89,7 @@ public class ProductEndpointsTests
         var okResult = (Ok<IEnumerable<Product>>)result;
         okResult.Value.Should().BeOfType<List<Product>>();
     }
+
     [Fact]
     public async Task GetProductsByCategory_ReturnsNotFoundResult()
     {
@@ -101,6 +104,7 @@ public class ProductEndpointsTests
         //Assert
         result.Should().BeOfType<NotFound>();
     }
+
     [Fact]
     public async Task GetProductsByName_ReturnsOkResult()
     {
@@ -117,6 +121,7 @@ public class ProductEndpointsTests
         var okResult = (Ok<IEnumerable<Product>>)result;
         okResult.Value.Should().BeOfType<List<Product>>();
     }
+
     [Fact]
     public async Task GetProductsByName_ReturnsNotFoundResult()
     {
@@ -131,7 +136,7 @@ public class ProductEndpointsTests
         //Assert
         result.Should().BeOfType<NotFound>();
     }
-    
+
     [Fact]
     public void CreateProduct_ReturnsCreatedAtRoute()
     {
@@ -149,6 +154,7 @@ public class ProductEndpointsTests
         var createResult = (CreatedAtRoute<Product>)result;
         createResult.Value.Should().BeOfType<Product>();
     }
+
     [Fact]
     public void UpdateProduct_ReturnsAcceptedAtRoute()
     {
@@ -165,7 +171,7 @@ public class ProductEndpointsTests
         result.Should().BeOfType<AcceptedAtRoute<Product>>();
         var createResult = (AcceptedAtRoute<Product>)result;
         createResult.Value.Should().BeOfType<Product>();
-    }       
+    }
 
     [Fact]
     public void DeleteProduct_ReturnsOkResult()
