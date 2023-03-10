@@ -1,19 +1,23 @@
-﻿using Catalog.Core.Entities;
+﻿using System.Text;
+using System.Text.Json;
+using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using Common.Caching;
 using RabbitMQ.Client;
-using System.Text.Json;
+using ILogger = Serilog.ILogger;
 
 namespace Catalog.Minimal.API.Products;
 
 public class ProductService : IProductService
 {
-    private readonly ICatalogRepository _catalogRepository;
-    private readonly Serilog.ILogger _logger;
     private readonly IRedisCacheProvider _cache;
+    private readonly ICatalogRepository _catalogRepository;
 
     private readonly IConnectionFactory _connectionFactory;
-    public ProductService(ICatalogRepository catalogRepository, IRedisCacheProvider cache, Serilog.ILogger logger, IConnectionFactory connectionFactory)
+    private readonly ILogger _logger;
+
+    public ProductService(ICatalogRepository catalogRepository, IRedisCacheProvider cache, ILogger logger,
+        IConnectionFactory connectionFactory)
     {
         _catalogRepository = catalogRepository;
         _cache = cache;
@@ -23,10 +27,10 @@ public class ProductService : IProductService
 
     public void CreateProduct(Product? product)
     {
-        if (product is null) { throw new ArgumentNullException(nameof(product)); }
+        if (product is null) throw new ArgumentNullException(nameof(product));
 
         _catalogRepository.CreateProduct(product);
-        _cache.Set<Product>(product.Id, product);
+        _cache.Set(product.Id, product);
 
         using var connection = _connectionFactory.CreateConnection();
         using var channel = connection.CreateModel();
@@ -39,7 +43,7 @@ public class ProductService : IProductService
         channel.QueueDeclare(queue, true, false, false, null);
         channel.QueueBind(queue, exchange, routingKey);
 
-        var body = System.Text.Encoding.UTF8.GetBytes(JsonSerializer.Serialize(product));
+        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(product));
 
         channel.BasicPublish(exchange, routingKey, null, body);
     }
@@ -73,19 +77,21 @@ public class ProductService : IProductService
             _logger.Information("Product {id} get from Caching", id);
             return cacheProduct;
         }
+
         var product = await _catalogRepository.GetProductById(id);
         if (product != null)
         {
             _logger.Information("Product {id} get from DB", id);
-            _cache.Set<Product>(id, product);
+            _cache.Set(id, product);
         }
+
         return product;
     }
 
     public void UpdateProduct(Product? product)
     {
-        if (product is null) { throw new ArgumentNullException(nameof(product)); }
+        if (product is null) throw new ArgumentNullException(nameof(product));
         _catalogRepository.UpdateProduct(product);
-        _cache.Set<Product>(product.Id, product);
+        _cache.Set(product.Id, product);
     }
 }

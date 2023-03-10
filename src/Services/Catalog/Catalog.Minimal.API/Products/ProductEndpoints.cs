@@ -9,6 +9,7 @@ public static class ProductEndpoints
     {
         app.MapGroup("api/v1/catalog").MapCatalogApi();
     }
+
     private static RouteGroupBuilder MapCatalogApi(this RouteGroupBuilder group)
     {
         group.MapGet("/", GetAllProducts);
@@ -24,43 +25,32 @@ public static class ProductEndpoints
     public static async Task<IResult> GetAllProducts(IProductService service)
     {
         var products = await service.GetProducts();
-        if (!products.Any())
-        {
-            return Results.NotFound();
-        }
+        if (!products.Any()) return Results.NotFound();
         return Results.Ok(products);
     }
 
     public static async Task<IResult> GetProductById(IProductService service, string id)
     {
         var product = await service.GetProductById(id);
-        if (product == null)
-        {
-            return Results.NotFound();
-        }
+        if (product == null) return Results.NotFound();
         return Results.Ok(product);
     }
 
     public static async Task<IResult> GetProductsByCategory(IProductService service, string category)
     {
         var products = await service.GetProductsByCategory(category);
-        if (!products.Any())
-        {
-            return Results.NotFound();
-        }
-        return Results.Ok(products);
-    }
-    public static async Task<IResult> GetProductsByName(IProductService service, string name)
-    {
-        var products = await service.GetProductsByName(name);
-        if (!products.Any())
-        {
-            return Results.NotFound();
-        }
+        if (!products.Any()) return Results.NotFound();
         return Results.Ok(products);
     }
 
-    public static IResult CreateProduct(IProductService service, [FromBody]Product product)
+    public static async Task<IResult> GetProductsByName(IProductService service, string name)
+    {
+        var products = await service.GetProductsByName(name);
+        if (!products.Any()) return Results.NotFound();
+        return Results.Ok(products);
+    }
+
+    public static IResult CreateProduct(IProductService service, [FromBody] Product product)
     {
         service.CreateProduct(product);
         return Results.CreatedAtRoute("GetProduct", new { id = product.Id }, product);
@@ -77,5 +67,4 @@ public static class ProductEndpoints
         service.DeleteProduct(id);
         return Results.Ok();
     }
-
 }

@@ -11,7 +11,6 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using RabbitMQ.Client;
-using StackExchange.Redis;
 
 namespace Catalog.Minimal.API.Configuration;
 
@@ -19,7 +18,6 @@ public static class DIConfig
 {
     public static void RegisterServices(this IServiceCollection services, ConfigurationManager configuration)
     {
-
         services.AddValidatorsFromAssemblyContaining<DatabaseSettingsModelValidator>(ServiceLifetime.Singleton);
         services
             .AddOptions<DatabaseSettingsModel>()
@@ -43,14 +41,12 @@ public static class DIConfig
         services.AddSingleton<IConnectionFactory>(connectionFactory);
 
 
-
         services.AddSingleton<ICatalogContext, CatalogContext>();
         services.AddScoped<ICatalogRepository, CatalogRepository>();
         services.AddScoped<IProductService, ProductService>();
 
         var tracingUri = configuration.GetValue<string>("TracingConfiguration:Uri");
         if (tracingUri is not null)
-        {
             services.AddOpenTelemetry()
                 .WithMetrics(metricBuilder => metricBuilder
                     .AddAspNetCoreInstrumentation()
@@ -60,20 +56,18 @@ public static class DIConfig
                     .AddSource("Catalog")
                     .SetResourceBuilder(
                         ResourceBuilder.CreateDefault()
-                            .AddService(serviceName: "CatalogMinimalAPI", serviceVersion: "1.0")
+                            .AddService("CatalogMinimalAPI", serviceVersion: "1.0")
                             .AddTelemetrySdk())
                     .AddAspNetCoreInstrumentation()
                     .AddMongoDBInstrumentation()
                     .ConfigureBuilder((sp, configure) =>
                     {
-                        RedisCache redisCache = (RedisCache)sp.GetRequiredService<IDistributedCache>();
+                        var redisCache = (RedisCache)sp.GetRequiredService<IDistributedCache>();
                         configure.AddRedisInstrumentation(redisCache.GetConnection());
                     })
                     .AddOtlpExporter(options =>
-                options.Endpoint = new Uri(tracingUri))
-            )
-            .StartWithHost();
-
-        }
+                        options.Endpoint = new Uri(tracingUri))
+                )
+                .StartWithHost();
     }
 }
