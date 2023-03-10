@@ -1,6 +1,8 @@
 using Catalog.Minimal.API.Configuration;
 using Catalog.Minimal.API.Products;
 using Common.Logging;
+using MongoDB.Driver;
+using Polly;
 using RabbitMQ.Client;
 using Serilog;
 
@@ -12,7 +14,14 @@ var connectionFactory = new ConnectionFactory
 {
     Uri = new Uri(builder.Configuration.GetValue<string>("QueueSettings:ConnectionString"))
 };
+
 builder.Services.AddSingleton<IConnectionFactory>(connectionFactory);
+builder.Services.AddSingleton(sp => Policy
+    .Handle<RabbitMQ.Client.Exceptions.BrokerUnreachableException>()
+    .WaitAndRetry(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)))
+    .Execute(() => sp.GetRequiredService<IConnectionFactory>().CreateConnection())
+);
+builder.Services.AddTransient(sp => sp.GetRequiredService<IConnection>().CreateModel());
 
 
 builder.Services.AddEndpointsApiExplorer();

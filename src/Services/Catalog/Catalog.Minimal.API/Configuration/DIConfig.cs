@@ -4,13 +4,12 @@ using Catalog.Core.Repositories;
 using Catalog.Minimal.API.Products;
 using Common.Caching;
 using FluentValidation;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using RabbitMQ.Client;
+using StackExchange.Redis;
 
 namespace Catalog.Minimal.API.Configuration;
 
@@ -26,9 +25,11 @@ public static class DIConfig
             .ValidateOnStart();
 
         var redisUri = configuration.GetValue<string>("CacheSettings:ConnectionString");
+        IConnectionMultiplexer redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisUri);
+        services.AddSingleton(redisConnectionMultiplexer);
         services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = redisUri;
+            options.ConnectionMultiplexerFactory = () => Task.FromResult(redisConnectionMultiplexer);
             options.InstanceName = "CatalogRedisCache";
         });
 
@@ -62,8 +63,8 @@ public static class DIConfig
                     .AddMongoDBInstrumentation()
                     .ConfigureBuilder((sp, configure) =>
                     {
-                        var redisCache = (RedisCache)sp.GetRequiredService<IDistributedCache>();
-                        configure.AddRedisInstrumentation(redisCache.GetConnection());
+                        //var redisCache = (RedisCache)sp.GetRequiredService<IDistributedCache>();
+                        configure.AddRedisInstrumentation(sp.GetRequiredService<IConnectionMultiplexer>());
                     })
                     .AddOtlpExporter(options =>
                         options.Endpoint = new Uri(tracingUri))

@@ -19,9 +19,9 @@ public class Product
 
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; }
+    public string Id { get; private set; }
 
-    [BsonElement("Name")] public string Name { get; }
+    [BsonElement("Name")] public string Name { get;}
 
     [BsonElement("Category")] public string Category { get; }
 
@@ -32,4 +32,9 @@ public class Product
     [BsonElement("ImageFile")] public string ImageFile { get; }
 
     [BsonElement("Price")] public decimal Price { get; }
+
+    public void AddNewId(string id)
+    {
+        this.Id = id;
+    }
 }

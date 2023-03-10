@@ -22,8 +22,8 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.2
 
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
+  #rabbitmq:
+  #  image: rabbitmq:3-management-alpine
 
   otel-collector:
     image: otel/opentelemetry-collector
@@ -47,14 +47,14 @@ services:
       context: ..
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
 
-  catalog-cache:
-    image: redis:alpine
-    container_name: catalog-cache
-    restart: always
-    ports:
-      - "6379:6379"
-    networks:
-      - catalog-network
+  #catalog-cache:
+  #  image: redis:alpine
+  #  container_name: catalog-cache
+  #  restart: always
+  #  ports:
+  #    - "6379:6379"
+  #  networks:
+  #    - catalog-network
 
 volumes:
   portainer_data:

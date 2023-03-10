@@ -87,14 +87,14 @@ services:
     networks:
       - elastic-network
 
-  rabbitmq:
-    container_name: rabbitmq
-    restart: always
-    ports:
-        - 5672:5672
-        - 15672:15672
-    networks:
-      - catalog-network
+  #rabbitmq:
+  #  container_name: rabbitmq
+  #  restart: always
+  #  ports:
+  #      - 5672:5672
+  #      - 15672:15672
+  #  networks:
+  #    - catalog-network
 
   otel-collector:
     container_name: otelcollector
