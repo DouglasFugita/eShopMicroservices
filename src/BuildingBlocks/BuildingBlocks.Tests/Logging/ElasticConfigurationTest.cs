@@ -1,13 +1,9 @@
 ﻿using Common.Logging;
 using FluentAssertions;
 using Serilog.Sinks.Elasticsearch;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BuildingBlocks.Tests.Logging;
+
 public class ElasticConfigurationTest
 {
     [Fact]

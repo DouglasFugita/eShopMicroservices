@@ -4,12 +4,8 @@ namespace Common.Logging;
 
 public class ElasticConfiguration
 {
-    public string ProjectName { get; }
-    public string EnvironmentName { get;  }
-    public string ApplicationName { get; }
-    public ElasticsearchSinkOptions ElasticsearchSinkOptions { get; }
-
-    public ElasticConfiguration(string projectName, string environmentName, string applicationName, ElasticsearchSinkOptions elasticsearchSinkOptions)
+    public ElasticConfiguration(string projectName, string environmentName, string applicationName,
+        ElasticsearchSinkOptions elasticsearchSinkOptions)
     {
         ProjectName = projectName;
         EnvironmentName = environmentName;
@@ -17,4 +13,8 @@ public class ElasticConfiguration
         ApplicationName = applicationName;
     }
 
+    public string ProjectName { get; }
+    public string EnvironmentName { get; }
+    public string ApplicationName { get; }
+    public ElasticsearchSinkOptions ElasticsearchSinkOptions { get; }
 }

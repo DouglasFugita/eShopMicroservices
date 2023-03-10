@@ -1,4 +1,5 @@
 ﻿namespace Common.Caching;
+
 public interface IRedisCacheProvider
 {
     T? Get<T>(string key);

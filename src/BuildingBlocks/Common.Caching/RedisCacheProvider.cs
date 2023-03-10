@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using System.Text.Json;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Common.Caching;
+
 public class RedisCacheProvider : IRedisCacheProvider
 {
     private readonly IDistributedCache _cache;
@@ -14,10 +15,7 @@ public class RedisCacheProvider : IRedisCacheProvider
     public T? Get<T>(string key)
     {
         var value = _cache.GetString(key);
-        if (value != null)
-        {
-            return JsonSerializer.Deserialize<T>(value);
-        }
+        if (value != null) return JsonSerializer.Deserialize<T>(value);
         return default;
     }
 
@@ -26,7 +24,7 @@ public class RedisCacheProvider : IRedisCacheProvider
         var timeout = new DistributedCacheEntryOptions
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(3),
-            SlidingExpiration = TimeSpan.FromMinutes(1),
+            SlidingExpiration = TimeSpan.FromMinutes(1)
         };
 
         _cache.SetString(key, JsonSerializer.Serialize(value), timeout);

@@ -2,12 +2,9 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
-using Moq;
-
 
 namespace BuildingBlocks.Tests.Logging;
+
 public class ElasticConfigurationBuilderTest
 {
     [Fact]
@@ -27,6 +24,5 @@ public class ElasticConfigurationBuilderTest
             sut.ApplicationName.Should().Be("testhost");
         });
 #pragma warning restore ASP0013 // Suggest switching from using Configure methods to WebApplicationBuilder.Configuration
-
     }
 }
