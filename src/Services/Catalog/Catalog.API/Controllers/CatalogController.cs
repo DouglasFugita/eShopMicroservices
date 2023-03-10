@@ -1,13 +1,13 @@
-﻿using Catalog.Core.Entities;
+﻿using System.Net;
+using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Catalog.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class CatalogController: ControllerBase
+public class CatalogController : ControllerBase
 {
     private readonly ICatalogRepository _repository;
 
@@ -23,10 +23,7 @@ public class CatalogController: ControllerBase
     {
         var products = await _repository.GetProducts();
 
-        if (!products.Any())
-        {
-            return NotFound();
-        }
+        if (!products.Any()) return NotFound();
         return Ok(products);
     }
 
@@ -36,10 +33,7 @@ public class CatalogController: ControllerBase
     public async Task<ActionResult<Product>> GetProductById(string id)
     {
         var product = await _repository.GetProductById(id);
-        if (product == null)
-        {
-            return NotFound();
-        }
+        if (product == null) return NotFound();
 
         return Ok(product);
     }
@@ -51,10 +45,7 @@ public class CatalogController: ControllerBase
     public async Task<ActionResult<Product>> GetProductByCategory(string category)
     {
         var products = await _repository.GetProductByCategory(category);
-        if (!products.Any())
-        {
-            return NotFound();
-        }
+        if (!products.Any()) return NotFound();
         return Ok(products);
     }
 
@@ -65,10 +56,7 @@ public class CatalogController: ControllerBase
     public async Task<ActionResult<Product>> GetProductByName(string name)
     {
         var products = await _repository.GetProductByName(name);
-        if (!products.Any())
-        {
-            return NotFound();
-        }
+        if (!products.Any()) return NotFound();
         return Ok(products);
     }
 

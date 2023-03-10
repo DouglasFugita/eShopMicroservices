@@ -19,7 +19,6 @@ public static class DIConfig
         var tracingUri = configuration.GetValue<string>("TracingConfiguration:Uri");
 
         if (tracingUri is not null)
-        {
             services.AddOpenTelemetry()
                 .WithMetrics(metricBuilder => metricBuilder
                     .AddAspNetCoreInstrumentation()
@@ -28,15 +27,13 @@ public static class DIConfig
                     .AddSource("Catalog")
                     .SetResourceBuilder(
                         ResourceBuilder.CreateDefault()
-                            .AddService(serviceName: "Catalog", serviceVersion: "1.0")
+                            .AddService("Catalog", serviceVersion: "1.0")
                             .AddTelemetrySdk())
                     .AddAspNetCoreInstrumentation()
                     .AddMongoDBInstrumentation()
                     .AddOtlpExporter(options =>
-                options.Endpoint = new Uri(tracingUri))
-            )
-            .StartWithHost();
-
-        }
+                        options.Endpoint = new Uri(tracingUri))
+                )
+                .StartWithHost();
     }
 }

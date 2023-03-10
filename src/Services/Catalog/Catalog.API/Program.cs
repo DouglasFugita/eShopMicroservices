@@ -1,8 +1,6 @@
 using Catalog.API.Configuration;
 using Common.Logging;
-
 using Serilog;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,5 +29,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
