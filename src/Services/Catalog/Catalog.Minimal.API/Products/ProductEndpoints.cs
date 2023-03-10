@@ -1,11 +1,14 @@
 ﻿using Catalog.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.NetworkInformation;
 
 namespace Catalog.Minimal.API.Products;
 
 public static class ProductEndpoints
 {
+    public static void MapCatalogEndpoints(this WebApplication app)
+    {
+        app.MapGroup("api/v1/catalog").MapCatalogApi();
+    }
     private static RouteGroupBuilder MapCatalogApi(this RouteGroupBuilder group)
     {
         group.MapGet("/", GetAllProducts);
@@ -15,12 +18,7 @@ public static class ProductEndpoints
         group.MapPost("/", CreateProduct);
         group.MapPut("/", UpdateProduct);
         group.MapDelete("/", DeleteProduct);
-
         return group;
-    }
-    public static void MapCatalogEndpoints(this WebApplication app)
-    {
-        app.MapGroup("api/v1/catalog").MapCatalogApi();
     }
 
     public static async Task<IResult> GetAllProducts(IProductService service)
@@ -28,7 +26,7 @@ public static class ProductEndpoints
         var products = await service.GetProducts();
         if (!products.Any())
         {
-            Results.NotFound();
+            return Results.NotFound();
         }
         return Results.Ok(products);
     }
@@ -38,7 +36,7 @@ public static class ProductEndpoints
         var product = await service.GetProductById(id);
         if (product == null)
         {
-            Results.NotFound();
+            return Results.NotFound();
         }
         return Results.Ok(product);
     }
@@ -48,7 +46,7 @@ public static class ProductEndpoints
         var products = await service.GetProductsByCategory(category);
         if (!products.Any())
         {
-            Results.NotFound();
+            return Results.NotFound();
         }
         return Results.Ok(products);
     }
@@ -57,7 +55,7 @@ public static class ProductEndpoints
         var products = await service.GetProductsByName(name);
         if (!products.Any())
         {
-            Results.NotFound();
+            return Results.NotFound();
         }
         return Results.Ok(products);
     }

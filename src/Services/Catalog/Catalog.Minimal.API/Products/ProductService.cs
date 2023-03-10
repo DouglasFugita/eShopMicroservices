@@ -28,7 +28,6 @@ public class ProductService : IProductService
         _catalogRepository.CreateProduct(product);
         _cache.Set<Product>(product.Id, product);
 
-
         using var connection = _connectionFactory.CreateConnection();
         using var channel = connection.CreateModel();
 

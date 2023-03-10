@@ -31,6 +31,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Catalog.API\Catalog.API.csproj" />
+    <ProjectReference Include="..\Catalog.Minimal.API\Catalog.Minimal.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="API" />
+    <Folder Include="Core" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="MinimalAPI\ProductServiceTests.cs" />
   </ItemGroup>
 
 </Project>

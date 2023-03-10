@@ -63,13 +63,13 @@ public class ControllerTests
     {
         //Arrange
         var mockCatalogRepository = new Mock<ICatalogRepository>();
-        mockCatalogRepository.Setup(service => service.GetProductById(It.IsAny<String>()))
+        mockCatalogRepository.Setup(service => service.GetProductById(It.IsAny<string>()))
             .ReturnsAsync(ProductsFixtures.GetFakeProduct.Generate(1).First());
 
         var controller = new CatalogController(mockCatalogRepository.Object);
 
         //Act
-        var actionResult = await controller.GetProductById(It.IsAny<String>());
+        var actionResult = await controller.GetProductById(It.IsAny<string>());
 
         //Assert
         var result = actionResult.Result as OkObjectResult;

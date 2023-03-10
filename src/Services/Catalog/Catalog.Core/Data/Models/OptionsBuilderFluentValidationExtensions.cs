@@ -10,7 +10,6 @@ public static class OptionsBuilderFluentValidationExtensions
         optionsBuilder.Services.AddSingleton<IValidateOptions<TOptions>>(
             s => new FluentValidationOptions<TOptions>(optionsBuilder.Name, s.GetRequiredService<IValidator<TOptions>>()));
         return optionsBuilder;
-
     }
 }
 
