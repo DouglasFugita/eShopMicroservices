@@ -7,7 +7,7 @@ public static class CatalogContextSeed
 {
     public static async Task SeedData(IMongoCollection<Product> productCollection)
     {
-        bool existProduct = (productCollection.CountDocuments(p => true) > 0);
+        var existProduct = await productCollection.CountDocumentsAsync(p => true) > 0;
         if (!existProduct)
         {
             await productCollection.InsertManyAsync(GetPreconfiguredProducts());

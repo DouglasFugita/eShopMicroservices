@@ -11,7 +11,7 @@ using MongoDB.Bson;
 using Moq;
 using System.Text;
 
-namespace Catalog.UnitTests.Controllers;
+namespace Catalog.UnitTests.API.Controllers;
 
 public class ControllerTests
 {
@@ -30,8 +30,7 @@ public class ControllerTests
         var actionResult = await controller.GetProducts();
 
         //Assert
-        var result = actionResult.Result as OkObjectResult;
-        if (result is not null)
+        if (actionResult.Result is OkObjectResult result)
         {
             result.StatusCode.Should().Be(200);
             result.Value.Should().BeOfType<List<Product>>();
@@ -72,8 +71,7 @@ public class ControllerTests
         var actionResult = await controller.GetProductById(It.IsAny<string>());
 
         //Assert
-        var result = actionResult.Result as OkObjectResult;
-        if (result is not null)
+        if (actionResult.Result is OkObjectResult result)
         {
             result.StatusCode.Should().Be(200);
             result.Value.Should().BeOfType<Product>();
@@ -116,8 +114,7 @@ public class ControllerTests
         var actionResult = await controller.GetProductByCategory(It.IsAny<String>());
 
         //Assert
-        var result = actionResult.Result as OkObjectResult;
-        if (result is not null)
+        if (actionResult.Result is OkObjectResult result)
         {
             result.StatusCode.Should().Be(200);
             result.Value.Should().BeOfType<List<Product>>();
@@ -160,8 +157,7 @@ public class ControllerTests
         var actionResult = await controller.GetProductByName(It.IsAny<String>());
 
         //Assert
-        var result = actionResult.Result as OkObjectResult;
-        if (result is not null)
+        if (actionResult.Result is OkObjectResult result)
         {
             result.StatusCode.Should().Be(200);
             result.Value.Should().BeOfType<List<Product>>();
@@ -206,8 +202,7 @@ public class ControllerTests
         var actionResult = await controller.CreateProduct(produto);
 
         //Assert
-        var result = actionResult.Result as CreatedAtRouteResult;
-        if (result is not null)
+        if (actionResult.Result is CreatedAtRouteResult result)
         {
             result.StatusCode.Should().Be(201);
             mockCatalogRepository.Verify(x => x.CreateProduct(It.IsAny<Product>()), Times.Once());
@@ -232,8 +227,7 @@ public class ControllerTests
         var actionResult = await controller.UpdateProduct(It.IsAny<Product>());
 
         //Assert
-        var result = actionResult as OkObjectResult;
-        if (result is not null)
+        if (actionResult is OkObjectResult result)
         {
             result.StatusCode.Should().Be(200);
             mockCatalogRepository.Verify(x => x.UpdateProduct(It.IsAny<Product>()), Times.Once());
@@ -258,8 +252,7 @@ public class ControllerTests
         var actionResult = await controller.DeleteProduct(It.IsAny<String>());
 
         //Assert
-        var result = actionResult as OkObjectResult;
-        if (result is not null)
+        if (actionResult is OkObjectResult result)
         {
             result.StatusCode.Should().Be(200);
             mockCatalogRepository.Verify(x => x.DeleteProduct(It.IsAny<String>()), Times.Once());

@@ -16,11 +16,11 @@ public class CatalogContext : ICatalogContext
         clientSettings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber());
         clientSettings.ServerSelectionTimeout = TimeSpan.FromSeconds(5);
 
-        var mongoClient = new MongoClient(clientSettings);
+        var mongodbClient = new MongoClient(clientSettings);
 
-        var mongoDatabase = mongoClient.GetDatabase(settings.Value.DatabaseName);
+        var mongodbDatabase = mongodbClient.GetDatabase(settings.Value.DatabaseName);
 
-        Products = mongoDatabase.GetCollection<Product>(settings.Value.CollectionName);
+        Products = mongodbDatabase.GetCollection<Product>(settings.Value.CollectionName);
         CatalogContextSeed.SeedData(Products).WaitAsync(new CancellationToken());
     }
 
