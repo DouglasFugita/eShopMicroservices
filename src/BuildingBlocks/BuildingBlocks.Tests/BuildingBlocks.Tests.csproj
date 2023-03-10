@@ -43,6 +43,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\Catalog\Catalog.Core\Catalog.Core.csproj" />
+    <ProjectReference Include="..\Common.Caching\Common.Caching.csproj" />
     <ProjectReference Include="..\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>
 

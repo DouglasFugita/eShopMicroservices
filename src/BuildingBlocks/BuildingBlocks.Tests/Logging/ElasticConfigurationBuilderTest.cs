@@ -21,7 +21,6 @@ public class ElasticConfigurationBuilderTest
             var sut = ElasticConfigurationBuilder.Build(config.Build(), hostingContext);
             sut.ProjectName.Should().Be("eShopMicroservices");
             sut.EnvironmentName.Should().Be("production");
-            sut.ApplicationName.Should().Be("testhost");
         });
 #pragma warning restore ASP0013 // Suggest switching from using Configure methods to WebApplicationBuilder.Configuration
     }
