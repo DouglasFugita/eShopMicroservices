@@ -5,5 +5,5 @@ namespace Catalog.Core.Data;
 
 public interface ICatalogContext
 {
-    IMongoCollection<Product> Products { get;}
+    IMongoCollection<Product> Products { get; }
 }

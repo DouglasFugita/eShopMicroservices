@@ -21,38 +21,39 @@ public class CatalogRepository : ICatalogRepository
 
     public async Task<bool> DeleteProduct(string id)
     {
-        FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Id, id);
-        DeleteResult deleteResult = await ProductsCollection.DeleteOneAsync(filter);
+        var filter = Builders<Product>.Filter.Eq(p => p.Id, id);
+        var deleteResult = await ProductsCollection.DeleteOneAsync(filter);
 
         return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
     }
 
     public async Task<IEnumerable<Product>> GetProductByCategory(string categoryName)
     {
-        FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Category, categoryName);
+        var filter = Builders<Product>.Filter.Eq(p => p.Category, categoryName);
         return await ProductsCollection.Find(filter).ToListAsync();
     }
 
     public async Task<Product?> GetProductById(string id)
     {
-        FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Id, id);
+        var filter = Builders<Product>.Filter.Eq(p => p.Id, id);
         return await ProductsCollection.Find(filter).FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Product>> GetProductByName(string name)
     {
-        FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Name, name);
+        var filter = Builders<Product>.Filter.Eq(p => p.Name, name);
         return await ProductsCollection.Find(filter).ToListAsync();
     }
 
     public async Task<IEnumerable<Product>> GetProducts()
     {
-        return await PollyGenericHandler<List<Product>>.GenericPolicyWrapAsync().ExecuteAsync(() => ProductsCollection.Find(p => true).ToListAsync());
+        return await PollyGenericHandler<List<Product>>.GenericPolicyWrapAsync()
+            .ExecuteAsync(() => ProductsCollection.Find(p => true).ToListAsync());
     }
 
     public async Task<bool> UpdateProduct(Product product)
     {
-        var updateResult = await ProductsCollection.ReplaceOneAsync(filter: p => p.Id == product.Id, replacement: product);
+        var updateResult = await ProductsCollection.ReplaceOneAsync(p => p.Id == product.Id, product);
 
         return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
     }

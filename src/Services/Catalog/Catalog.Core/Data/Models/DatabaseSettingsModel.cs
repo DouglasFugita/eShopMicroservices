@@ -17,6 +17,6 @@ public class DatabaseSettingsModelValidator : AbstractValidator<DatabaseSettings
     {
         RuleFor(x => x.ConnectionString).NotEmpty();
         RuleFor(x => x.DatabaseName).NotEmpty();
-        RuleFor(x=> x.CollectionName).NotEmpty();
+        RuleFor(x => x.CollectionName).NotEmpty();
     }
 }

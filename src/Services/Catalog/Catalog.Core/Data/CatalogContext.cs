@@ -8,8 +8,6 @@ namespace Catalog.Core.Data;
 
 public class CatalogContext : ICatalogContext
 {
-    public IMongoCollection<Product> Products { get; }
-
     public CatalogContext(IOptions<DatabaseSettingsModel> settings)
     {
         var clientSettings = MongoClientSettings.FromConnectionString(settings.Value.ConnectionString);
@@ -24,5 +22,5 @@ public class CatalogContext : ICatalogContext
         CatalogContextSeed.SeedData(Products).WaitAsync(new CancellationToken());
     }
 
-
+    public IMongoCollection<Product> Products { get; }
 }

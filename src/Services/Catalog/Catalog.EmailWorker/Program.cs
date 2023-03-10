@@ -3,7 +3,7 @@ using Common.Logging;
 using RabbitMQ.Client;
 using Serilog;
 
-IHost host = Host.CreateDefaultBuilder(args)
+var host = Host.CreateDefaultBuilder(args)
     .UseSerilog(SeriLogger.Configure)
     .ConfigureServices(services =>
     {
